@@ -4,6 +4,13 @@
   min-height: 100vh;
 }
 
+ion-fab {
+  position: fixed !important;
+  bottom: 16px !important;
+  right: 16px !important;
+  z-index: 9999 !important;
+}
+
 // Header Styling
 ion-header {
   ion-toolbar {
