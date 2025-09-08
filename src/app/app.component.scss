@@ -1,0 +1,54 @@
+ion-header {
+  padding-top: env(safe-area-inset-top);
+}
+ion-toolbar{
+  margin-top: 42px;
+}
+.user-dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropdown-menu {
+  display: none;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  min-width: 200px;
+  z-index: 1000;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+ion-list {
+  padding: 0;
+  margin: 0;
+}
+
+ion-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --min-height: 48px;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--ion-color-light);
+  }
+}
+
+ion-label {
+  font-size: 14px;
+}
+
+ion-icon {
+  font-size: 18px;
+  margin-right: 12px;
+}

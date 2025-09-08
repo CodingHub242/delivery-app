@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Special Offer</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()" fill="clear">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="notification-content">
+    <div *ngIf="hasImage()" class="notification-image">
+      <img [src]="notification.image_url" [alt]="notification.title" class="image-preview">
+    </div>
+    
+    <div class="notification-text">
+      <h2 class="notification-title">{{ notification.title }}</h2>
+      <p class="notification-message">{{ notification.message }}</p>
+    </div>
+
+    <div class="notification-actions">
+      <ion-button expand="block" (click)="closeModal()" class="close-button">
+        Got it!
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+   
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="loading" class="loading-container">
+    <ion-spinner></ion-spinner>
+    <p>{{ 'loading_driver_information' | translate }}</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <ion-card>
+      <ion-card-content>
+        <ion-icon name="warning" color="danger"></ion-icon>
+        <p>{{ error }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="worker && !loading">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ worker?.name }}</ion-card-title>
+        <ion-card-subtitle>
+          <ion-badge [color]="worker?.is_available ? 'success' : 'danger'">
+            {{ worker?.is_available ? 'Available' : 'Unavailable' }}
+          </ion-badge>
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="profile-section">
+          <img
+            [src]="worker?.profile_picture || 'assets/images/default-driver.png'"
+            alt="{{ worker?.name }}"
+            class="profile-image"
+            onerror="this.src='assets/images/default-driver.png'"
+          />
+
+          <div class="contact-info">
+            <!-- Rating Display -->
+            <div class="rating-section" *ngIf="worker?.average_rating">
+              <ion-item>
+                <ion-label>
+                  <h3>Rating</h3>
+                  <app-rating
+                    [rating]="worker?.average_rating ?? 0"
+                    [readonly]="true"
+                    [size]="'medium'"
+                    [showValue]="true"
+                  ></app-rating>
+                  <p *ngIf="worker?.rating_count">({{ worker?.rating_count }} reviews)</p>
+                </ion-label>
+              </ion-item>
+            </div>
+
+            <ion-button expand="block" color="primary" (click)="openRatingModal()">
+              Rate Worker
+            </ion-button>
+
+            <ion-item>
+              <ion-icon name="call" slot="start"></ion-icon>
+              <ion-label>Phone: {{ worker?.phone_number }}</ion-label>
+            </ion-item>
+
+            <ion-item>
+              <ion-icon name="car" slot="start"></ion-icon>
+              <ion-label>Vehicle: {{ worker?.vehicle_type }}</ion-label>
+            </ion-item>
+
+            <ion-item>
+              <ion-icon name="document" slot="start"></ion-icon>
+              <ion-label>Registration: {{ worker?.vehicle_registration }}</ion-label>
+            </ion-item>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="worker.current_latitude && worker.current_longitude">
+      <ion-card-header>
+      <ion-card-title>{{ 'current_location' | translate }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Latitude: {{ worker?.current_latitude }}</p>
+        <p>Longitude: {{ worker?.current_longitude }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

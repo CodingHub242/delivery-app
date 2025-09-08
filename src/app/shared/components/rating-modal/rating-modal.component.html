@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Rate {{ worker?.name }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="rating-modal-content">
+  <div class="worker-info">
+    <img
+      [src]="worker?.profile_picture || 'assets/images/default-driver.png'"
+      alt="{{ worker?.name }}"
+      class="worker-avatar"
+      onerror="this.src='assets/images/default-driver.png'"
+    />
+    <div class="worker-details">
+      <h3>{{ worker?.name }}</h3>
+      <p>{{ worker?.vehicle_type }} - {{ worker?.vehicle_registration }}</p>
+    </div>
+  </div>
+
+  <div class="rating-section">
+    <ion-text>
+      <h4>How would you rate this service?</h4>
+    </ion-text>
+
+    <app-rating
+      [rating]="rating"
+      [readonly]="false"
+      [size]="'large'"
+      [showValue]="true"
+      (ratingChange)="onRatingChange($event)"
+    ></app-rating>
+  </div>
+
+  <div class="review-section">
+    <ion-item>
+      <ion-label position="stacked">Review (Optional)</ion-label>
+      <ion-textarea
+        [(ngModel)]="review"
+        placeholder="Share your experience..."
+        rows="3"
+        maxlength="500"
+      ></ion-textarea>
+    </ion-item>
+    <ion-text color="medium" class="character-count">
+      {{ review.length }}/500 characters
+    </ion-text>
+  </div>
+
+  <div class="action-buttons">
+    <ion-button
+      fill="outline"
+      expand="block"
+      (click)="dismiss()"
+      [disabled]="isSubmitting"
+    >
+      Cancel
+    </ion-button>
+
+    <ion-button
+      fill="solid"
+      expand="block"
+      (click)="submitRating()"
+      [disabled]="rating === 0 || isSubmitting"
+    >
+      <span *ngIf="!isSubmitting">Submit Rating</span>
+      <span *ngIf="isSubmitting">Submitting...</span>
+    </ion-button>
+  </div>
+</ion-content>

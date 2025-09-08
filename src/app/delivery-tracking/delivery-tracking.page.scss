@@ -1,0 +1,221 @@
+.tracking-container {
+  padding: 16px;
+}
+ion-content{
+  margin-top: 20%;
+}
+.map-container {
+  height: 300px;
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+ion-card {
+  margin-bottom: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+ion-card-header {
+  padding-bottom: 8px;
+}
+
+ion-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+ion-card-content {
+  padding-top: 8px;
+}
+
+ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 12px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+  
+  ion-label {
+    h3 {
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--ion-color-dark);
+    }
+    
+    p {
+      color: var(--ion-color-medium);
+      margin: 2px 0;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+ion-button {
+  margin-top: 12px;
+  --border-radius: 8px;
+  font-weight: 600;
+}
+
+ion-badge {
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+// Status colors
+.status-preparing {
+  --ion-color-base: var(--ion-color-warning);
+}
+
+.status-in_transit {
+  --ion-color-base: var(--ion-color-primary);
+}
+
+.status-delivered {
+  --ion-color-base: var(--ion-color-success);
+}
+
+// Responsive design
+@media (min-width: 768px) {
+  .tracking-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .map-container {
+    height: 400px;
+  }
+}
+
+// Leaflet map styles
+:host ::ng-deep {
+  .leaflet-container {
+    border-radius: 12px;
+  }
+  
+  .leaflet-popup-content {
+    margin: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    
+    b {
+      color: var(--ion-color-primary);
+    }
+  }
+
+  // Vehicle icon styles
+  .vehicle-icon {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    border: 2px solid var(--ion-color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    
+    &.car-icon {
+      border-color: var(--ion-color-primary);
+      background: rgba(var(--ion-color-primary-rgb), 0.1);
+    }
+    
+    &.bike-icon {
+      border-color: var(--ion-color-secondary);
+      background: rgba(var(--ion-color-secondary-rgb), 0.1);
+    }
+  }
+}
+.tracking-container {
+  padding: var(--delivery-spacing);
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  min-height: 100vh;
+}
+
+// Map Container
+.map-container {
+  height: 300px;
+  width: 100%;
+  border-radius: var(--delivery-border-radius);
+  overflow: hidden;
+  box-shadow: 0 8px 32px var(--delivery-shadow);
+  margin-bottom: var(--delivery-spacing);
+  border: 3px solid white;
+}
+
+// Status Badge Styling
+ion-badge {
+  --border-radius: 20px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-top: 6px;
+  --padding-bottom: 6px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.75rem;
+
+  &[color="warning"] {
+    --background: linear-gradient(135deg, #FFB800, #FFA000);
+    --color: white;
+  }
+
+  &[color="primary"] {
+    --background: linear-gradient(135deg, var(--delivery-gradient-start), var(--delivery-gradient-end));
+  }
+
+  &[color="success"] {
+    --background: linear-gradient(135deg, #10DC60, #00C851);
+  }
+}
+
+// Driver Info Card
+ion-card {
+  .driver-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--delivery-gradient-start), var(--delivery-gradient-end));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 16px;
+  }
+
+  .driver-details {
+    display: flex;
+    align-items: center;
+
+    .driver-info {
+      flex: 1;
+
+      h3 {
+        margin: 0 0 4px 0;
+        font-weight: 600;
+        color: var(--ion-color-dark);
+      }
+
+      .rating {
+        color: #FFB800;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .vehicle-info {
+        color: var(--ion-color-medium);
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+// // Tracking Controls
+// .tracking-controls {
+//   display: flex;

@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/admin-dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Admin Chat Support</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="loading" class="loading-container">
+    <ion-spinner></ion-spinner>
+    <p>Loading messages...</p>
+  </div>
+
+  <div *ngIf="!loading" class="chat-container">
+    <!-- User List Sidebar -->
+    <div class="user-list">
+      <h3>Users</h3>
+      <ion-list>
+        <ion-item *ngFor="let user of users" (click)="selectUser(user)" [class.selected]="selectedUser?.id === user.id">
+          <ion-label>
+            <h2>{{ user.name }}</h2>
+            <p>{{ user.messages?.length || 0 }} messages</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <!-- Chat Area -->
+    <div class="chat-area">
+      <div *ngIf="selectedUser" class="chat-header">
+        <h3>Chat with {{ selectedUser.name }}</h3>
+      </div>
+
+      <div #messageContainer class="messages-container">
+        <div *ngFor="let message of messages" class="message" [class.my-message]="isMyMessage(message.sender_id)">
+          <div class="message-content">
+            <p class="message-text">{{ message.message }}</p>
+            <span class="message-time">{{ formatTime(message.created_at) }}</span>
+          </div>
+          <div class="message-meta">
+            <span class="message-sender">{{ getSenderName(message) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="message-input-container" *ngIf="selectedUser">
+        <ion-item>
+          <ion-textarea
+            id="messageInput"
+            [(ngModel)]="newMessage"
+            placeholder="Type your message..."
+            rows="1"
+            autoGrow="true"
+            (keydown.enter)="onEnterKey($event)"
+            (input)="onUserTyping()"
+          ></ion-textarea>
+          <ion-button slot="end" fill="clear" (click)="sendMessage()" >
+            <ion-icon name="send"></ion-icon>
+            Send Message  
+          </ion-button>
+        </ion-item>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !messages.length" class="no-chat-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>No Messages</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Select a user to start chatting!</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

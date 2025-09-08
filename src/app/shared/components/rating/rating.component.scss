@@ -1,0 +1,75 @@
+.rating-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .stars {
+    display: flex;
+    gap: 2px;
+
+    ion-icon {
+      transition: color 0.2s ease;
+
+      &.interactive {
+        cursor: pointer;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+
+  .rating-value {
+    font-weight: 600;
+    color: #333;
+  }
+
+  .rating-max {
+    color: #666;
+    font-size: 0.9em;
+  }
+}
+
+// Size variants
+.rating-small {
+  .stars ion-icon {
+    font-size: 16px;
+  }
+
+  .rating-value {
+    font-size: 14px;
+  }
+
+  .rating-max {
+    font-size: 12px;
+  }
+}
+
+.rating-medium {
+  .stars ion-icon {
+    font-size: 20px;
+  }
+
+  .rating-value {
+    font-size: 16px;
+  }
+
+  .rating-max {
+    font-size: 14px;
+  }
+}
+
+.rating-large {
+  .stars ion-icon {
+    font-size: 24px;
+  }
+
+  .rating-value {
+    font-size: 18px;
+  }
+
+  .rating-max {
+    font-size: 16px;
+  }
+}

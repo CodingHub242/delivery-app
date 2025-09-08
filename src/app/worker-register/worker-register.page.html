@@ -1,0 +1,117 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Worker Registration</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="register-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Join as a Worker</ion-card-title>
+        <ion-card-subtitle>Create your worker account</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <ion-item>
+            <ion-label position="floating">Full Name</ion-label>
+            <ion-input
+              formControlName="name"
+              placeholder="Enter your full name">
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Phone Number</ion-label>
+            <ion-input
+              formControlName="phone_number"
+              type="tel"
+              placeholder="Enter your phone number">
+            </ion-input>
+          </ion-item>
+
+          <!-- Worker Type Selection -->
+          <ion-item>
+            <ion-label>Worker Type</ion-label>
+          </ion-item>
+          <ion-radio-group formControlName="worker_type" class="worker-type-radio">
+            <ion-item>
+              <ion-label>Delivery Driver</ion-label>
+              <ion-radio slot="start" value="delivery_driver"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Service Worker</ion-label>
+              <ion-radio slot="start" value="service_worker"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+
+          <!-- Vehicle Type - Only show for delivery drivers -->
+          <ion-item *ngIf="registerForm.get('worker_type')?.value === 'delivery_driver'">
+            <ion-label position="floating">Vehicle Type</ion-label>
+            <ion-select formControlName="vehicle_type" placeholder="Select vehicle type">
+              <ion-select-option value="motorcycle">Motorcycle</ion-select-option>
+              <ion-select-option value="car">Car</ion-select-option>
+              <ion-select-option value="van">Van</ion-select-option>
+              <ion-select-option value="truck">Truck</ion-select-option>
+              <ion-select-option value="bicycle">Bicycle</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <!-- Vehicle Registration - Only show for delivery drivers -->
+          <ion-item *ngIf="registerForm.get('worker_type')?.value === 'delivery_driver'">
+            <ion-label position="floating">Vehicle Registration</ion-label>
+            <ion-input
+              formControlName="vehicle_registration"
+              placeholder="Enter vehicle registration number">
+            </ion-input>
+          </ion-item>
+
+          <!-- Service Type - Only show for service workers -->
+          <ion-item *ngIf="registerForm.get('worker_type')?.value === 'service_worker'">
+            <ion-label position="floating">Service Type</ion-label>
+            <ion-select formControlName="service_type" placeholder="Select your service">
+              <ion-select-option *ngFor="let service of services" [value]="service.name">{{ service.name }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input
+              formControlName="password"
+              type="password"
+              placeholder="Enter your password">
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Confirm Password</ion-label>
+            <ion-input
+              formControlName="password_confirmation"
+              type="password"
+              placeholder="Confirm your password">
+            </ion-input>
+          </ion-item>
+
+          <ion-button
+            expand="block"
+            type="submit"
+            [disabled]="registerForm.invalid"
+            class="ion-margin-top">
+            Register
+          </ion-button>
+        </form>
+
+        <div class="error-message" *ngIf="errorMessage">
+          <ion-text color="danger">{{ errorMessage }}</ion-text>
+        </div>
+
+        <div class="login-link ion-text-center ion-margin-top">
+          <p>Already have an account?
+            <a href="/worker-login">Login here</a>
+          </p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

@@ -1,0 +1,214 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="loadingDetails" class="loading-container">
+    <ion-spinner></ion-spinner>
+    <p>Loading order details...</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <p>{{error}}</p>
+    <ion-button (click)="loadOrderDetails()" fill="solid">
+      Try Again
+    </ion-button>
+  </div>
+
+  <div *ngIf="orderDetails && !loadingDetails">
+    <!-- Order Status -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Order Status</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-badge [color]="getStatusBadgeColor(orderDetails.status)">
+          {{orderDetails.status | titlecase}}
+        </ion-badge>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Order Information -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Order Information</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-icon name="time-outline" slot="start"></ion-icon>
+            <ion-label>
+              <h3>Order Date</h3>
+              <p>{{formatDate(orderDetails.created_at)}}</p>
+            </ion-label>
+          </ion-item>
+          
+          <ion-item>
+            <ion-icon name="time-outline" slot="start"></ion-icon>
+            <ion-label>
+              <h3>Last Updated</h3>
+              <p>{{formatDate(orderDetails.updated_at)}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item *ngIf="orderDetails.estimated_delivery_time">
+            <ion-icon name="time-outline" slot="start"></ion-icon>
+            <ion-label>
+              <h3>Estimated Delivery</h3>
+              <p>{{formatDate(orderDetails.estimated_delivery_time)}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item *ngIf="orderDetails.actual_delivery_time">
+            <ion-icon name="time-outline" slot="start"></ion-icon>
+            <ion-label>
+              <h3>Actual Delivery</h3>
+              <p>{{formatDate(orderDetails.actual_delivery_time)}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Location Information -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Location Information</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-icon name="navigate-outline" slot="start"></ion-icon>
+            <ion-label>
+              <h3>Pickup Location</h3>
+              <p>{{orderDetails.pickup_location || 'N/A'}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon name="navigate-outline" slot="start"></ion-icon>
+            <ion-label>
+              <h3>Delivery Location</h3>
+              <p>{{orderDetails.delivery_location || 'N/A'}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Payment Information -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Payment Information</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-icon name="cash-outline" slot="start"></ion-icon>
+            <ion-label>
+              <h3>Total Amount</h3>
+              <p>${{orderDetails.total_amount?.toFixed(2) || '0.00'}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Service Information -->
+    <ion-card *ngIf="orderDetails.service">
+      <ion-card-header>
+        <ion-card-title>Service Information</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-icon name="receipt-outline" slot="start"></ion-icon>
+            <ion-label>
+              <h3>Service Name</h3>
+              <p>{{orderDetails.service.name}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon name="receipt-outline" slot="start"></ion-icon>
+            <ion-label>
+              <h3>Service Description</h3>
+              <p>{{orderDetails.service.description}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Worker Information -->
+    <ion-card *ngIf="orderDetails.worker">
+      <ion-card-header>
+        <ion-card-title>Delivery Worker</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <h3>Worker Name</h3>
+              <p>{{orderDetails.worker.name}}</p>
+            </ion-label>
+          </ion-item>
+
+          <!-- Rating Display -->
+          <ion-item *ngIf="orderDetails.worker.average_rating">
+            <ion-label>
+              <h3>Rating</h3>
+              <app-rating
+                [rating]="orderDetails.worker.average_rating ?? 0"
+                [readonly]="true"
+                [size]="'small'"
+                [showValue]="true"
+              ></app-rating>
+              <p *ngIf="orderDetails.worker.rating_count">({{ orderDetails.worker.rating_count }} reviews)</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item *ngIf="orderDetails.worker.phone">
+            <ion-label>
+              <h3>Contact Phone</h3>
+              <p>{{orderDetails.worker.phone}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item *ngIf="orderDetails.worker.vehicle_type">
+            <ion-label>
+              <h3>Vehicle Type</h3>
+              <p>{{orderDetails.worker.vehicle_type}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item *ngIf="orderDetails.worker.license_plate">
+            <ion-label>
+              <h3>License Plate</h3>
+              <p>{{orderDetails.worker.license_plate}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+
+        <!-- Rating Button -->
+        <div class="rating-section" *ngIf="canRateOrder()">
+          <ion-button
+            expand="block"
+            fill="outline"
+            (click)="openRatingModal()"
+          >
+            <ion-icon name="star-outline" slot="start"></ion-icon>
+            Rate This Worker
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

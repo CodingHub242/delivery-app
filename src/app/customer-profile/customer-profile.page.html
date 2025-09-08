@@ -1,0 +1,305 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+  
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="profile-container">
+    <!-- Profile Header Section -->
+    <div class="profile-header">
+      <div class="profile-image-section">
+        <div class="profile-image-container">
+          <img 
+            [src]="profileImageUrl || 'assets/images/default-profile.png'" 
+            alt="Profile Picture"
+            class="profile-image"
+          />
+          <div class="profile-image-overlay" (click)="fileInput.click()">
+            <ion-icon name="camera" class="camera-icon"></ion-icon>
+          </div>
+        </div>
+        <input 
+          #fileInput
+          type="file" 
+          accept="image/*" 
+          (change)="onProfilePictureChange($event)"
+          style="display: none;"
+        />
+        <ion-button 
+          *ngIf="profilePicture" 
+          size="small" 
+          color="primary" 
+          (click)="uploadProfilePicture()"
+          class="upload-btn"
+        >
+          {{ 'upload' | translate }}
+        </ion-button>
+      </div>
+
+      <div class="profile-info">
+        <h1 class="customer-name">{{ customer?.name }}</h1>
+        <p class="customer-email">{{ customer?.email }}</p>
+        <p class="customer-role">{{ customer?.role | titlecase }}</p>
+      </div>
+    </div>
+
+    <!-- Profile Details Section -->
+    <ion-card class="profile-details-card">
+      <ion-card-header>
+        <ion-card-title>{{ 'personal_information' | translate }}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="detail-item">
+          <ion-icon name="person-outline" class="detail-icon"></ion-icon>
+          <div class="detail-content">
+            <label>{{ 'full_name' | translate }}</label>
+            <p>{{ customer?.name }}</p>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <ion-icon name="mail-outline" class="detail-icon"></ion-icon>
+          <div class="detail-content">
+            <label>{{ 'email_address' | translate }}</label>
+            <p>{{ customer?.email }}</p>
+          </div>
+        </div>
+
+        <div class="detail-item" *ngIf="customer?.phone">
+          <ion-icon name="call-outline" class="detail-icon"></ion-icon>
+          <div class="detail-content">
+            <label>{{ 'phone_number' | translate }}</label>
+            <p>{{ customer?.phone }}</p>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <ion-icon name="people-outline" class="detail-icon"></ion-icon>
+          <div class="detail-content">
+            <label>{{ 'account_type' | translate }}</label>
+            <p>{{ customer?.role | titlecase }}</p>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <ion-icon name="calendar-outline" class="detail-icon"></ion-icon>
+          <div class="detail-content">
+            <label>{{ 'member_since' | translate }}</label>
+            <p>{{ customer?.createdAt | date:'mediumDate' }}</p>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Quick Actions Section -->
+    <ion-card class="actions-card">
+      <ion-card-header>
+        <ion-card-title>{{ 'quick_actions' | translate }}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-list lines="none">
+          <ion-item button (click)="editProfile()">
+            <ion-icon name="create-outline" slot="start"></ion-icon>
+            <ion-label>{{ 'edit_profile' | translate }}</ion-label>
+          </ion-item>
+
+          <ion-item button (click)="changePassword()">
+            <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+            <ion-label>{{ 'change_password' | translate }}</ion-label>
+          </ion-item>
+
+          <ion-item button (click)="contactSupport()">
+            <ion-icon name="chatbubble-ellipses-outline" slot="start"></ion-icon>
+            <ion-label>{{ 'contact_support' | translate }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Order History and Service Requests Tabs -->
+    <ion-card class="history-card">
+      <ion-card-header>
+        <div class="tabs-container">
+          <ion-button 
+            [fill]="activeTab === 'orders' ? 'solid' : 'outline'" 
+            (click)="switchTab('orders')"
+            size="small"
+            class="tab-button"
+          >
+            {{ 'order_history' | translate }}
+          </ion-button>
+          <ion-button 
+            [fill]="activeTab === 'service-requests' ? 'solid' : 'outline'" 
+            (click)="switchTab('service-requests')"
+            size="small"
+            class="tab-button"
+          >
+            {{ 'service_requests' | translate }}
+          </ion-button>
+        </div>
+      </ion-card-header>
+
+      <ion-card-content>
+        <!-- Orders Tab Content -->
+        <div *ngIf="activeTab === 'orders'">
+          <!-- Loading State -->
+          <div *ngIf="loadingOrders" class="loading-container">
+            <ion-spinner></ion-spinner>
+            <p>{{ 'loading_orders' | translate }}</p>
+          </div>
+
+          <!-- Error State -->
+          <div *ngIf="ordersError && !loadingOrders" class="error-container">
+            <p>{{ ordersError }}</p>
+            <ion-button size="small" (click)="loadOrders()">
+              {{ 'try_again' | translate }}
+            </ion-button>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="!loadingOrders && !ordersError && orders.length === 0" class="empty-container">
+            <ion-icon name="receipt-outline" class="empty-icon"></ion-icon>
+            <p>{{ 'no_orders_found' | translate }}</p>
+          </div>
+
+          <!-- Orders List -->
+          <ion-list *ngIf="!loadingOrders && orders.length > 0" lines="full">
+            <ion-item *ngFor="let order of orders" class="order-item">
+              <div class="order-content">
+                <div class="order-header">
+                  <h3 class="order-id">Order #{{ order.id }}</h3>
+                  <ion-badge [color]="getStatusBadgeColor(order.status)">
+                    {{ order.status | titlecase }}
+                  </ion-badge>
+                </div>
+                
+                <div class="order-details">
+                  <p class="order-date">
+                    <ion-icon name="time-outline"></ion-icon>
+                    {{ formatDate(order.created_at) }}
+                  </p>
+                  
+                  <p *ngIf="order.pickup_location" class="order-location">
+                    From: {{ order.pickup_location }}
+                  </p>
+                  
+                  <p *ngIf="order.delivery_location" class="order-location">
+                    To: {{ order.delivery_location }}
+                  </p>
+                  
+                  <p *ngIf="order.total_amount" class="order-amount">
+                    Total: {{ order.total_amount | currency:'GHS' }}
+                  </p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="order-actions">
+                  <ion-button 
+                    *ngIf="isCurrentOrder(order)" 
+                    size="small" 
+                    fill="outline" 
+                    (click)="trackOrder(order.id)"
+                  >
+                    <ion-icon name="navigate-outline" slot="start"></ion-icon>
+                    {{ 'track_order' | translate }}
+                  </ion-button>
+                  
+                  <ion-button 
+                    *ngIf="!isCurrentOrder(order)" 
+                    size="small" 
+                    fill="clear"
+                    (click)="viewOrderDetails(order)"
+                  >
+                    {{ 'view_details' | translate }}
+                  </ion-button>
+                </div>
+              </div>
+            </ion-item>
+          </ion-list>
+        </div>
+
+        <!-- Service Requests Tab Content -->
+        <div *ngIf="activeTab === 'service-requests'">
+          <!-- Loading State -->
+          <div *ngIf="loadingServiceRequests" class="loading-container">
+            <ion-spinner></ion-spinner>
+            <p>{{ 'loading_service_requests' | translate }}</p>
+          </div>
+
+          <!-- Error State -->
+          <div *ngIf="serviceRequestsError && !loadingServiceRequests" class="error-container">
+            <p>{{ serviceRequestsError }}</p>
+            <ion-button size="small" (click)="loadServiceRequests()">
+              {{ 'try_again' | translate }}
+            </ion-button>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="!loadingServiceRequests && !serviceRequestsError && serviceRequests.length === 0" class="empty-container">
+            <ion-icon name="document-text-outline" class="empty-icon"></ion-icon>
+            <p>{{ 'no_service_requests_found' | translate }}</p>
+          </div>
+
+          <!-- Service Requests List -->
+          <ion-list *ngIf="!loadingServiceRequests && serviceRequests.length > 0" lines="full">
+            <ion-item *ngFor="let request of serviceRequests" class="service-request-item">
+              <div class="service-request-content">
+                <div class="service-request-header">
+                  <h3 class="request-id">Request #{{ request.id }}</h3>
+                  <ion-badge [color]="getServiceRequestStatusBadgeColor(request.status)">
+                    {{ request.status | titlecase }}
+                  </ion-badge>
+                </div>
+                
+                <div class="service-request-details">
+                  <p class="request-service">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    {{ request.service.name || 'Custom Service' }}
+                  </p>
+                  
+                  <p class="request-date">
+                    <ion-icon name="time-outline"></ion-icon>
+                    {{ formatDate(request.created_at) }}
+                  </p>
+                  
+                  <p *ngIf="request.pickup_location" class="request-location">
+                    From: {{ request.pickup_location }}
+                  </p>
+                  
+                  <p *ngIf="request.delivery_location" class="request-location">
+                    To: {{ request.delivery_location }}
+                  </p>
+                  
+                  <p *ngIf="request.estimated_price" class="request-price">
+                    Estimated: {{ request.estimated_price | currency:'GHS' }}
+                  </p>
+                  
+                  <p *ngIf="request.final_price" class="request-price">
+                    Final: {{ request.final_price | currency:'GHS' }}
+                  </p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="service-request-actions">
+                  <ion-button 
+                    size="small" 
+                    fill="clear"
+                    (click)="viewServiceRequestDetails(request)"
+                  >
+                    {{ 'view_details' | translate }}
+                  </ion-button>
+                </div>
+              </div>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

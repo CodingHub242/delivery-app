@@ -1,0 +1,21 @@
+<div class="rating-container {{ getSizeClass() }}">
+  <div class="stars">
+    <ion-icon
+      *ngFor="let filled of stars; let i = index"
+      [name]="getStarIcon(i)"
+      [style.color]="getStarColor(i)"
+      [class.interactive]="!readonly"
+      (click)="onStarClick(i)"
+      (mouseenter)="onStarHover(i)"
+      (mouseleave)="onStarLeave()"
+    ></ion-icon>
+  </div>
+
+  <span *ngIf="showValue" class="rating-value">
+    {{ rating.toFixed(1) }}
+  </span>
+
+  <span *ngIf="showValue && rating > 0" class="rating-max">
+    / {{ maxRating }}
+  </span>
+</div>

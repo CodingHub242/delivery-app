@@ -1,0 +1,177 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>My Orders</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">My Orders</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Location Permission Status -->
+  <ion-card *ngIf="!hasLocationPermission" color="warning">
+    <ion-card-content>
+      <ion-icon name="location" slot="start"></ion-icon>
+      <ion-text>
+        <h3>Location Permission Required</h3>
+        <p>Location access is needed to accept delivery orders. Please enable location services.</p>
+      </ion-text>
+      <ion-button fill="clear" slot="end" (click)="requestLocationPermission()">
+        Enable
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading && !isRefreshing" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <ion-text color="medium">
+      <p>Loading your orders...</p>
+    </ion-text>
+  </div>
+
+  <!-- Orders List -->
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="!isLoading && orders.length === 0" class="empty-state">
+    <ion-icon name="document-text-outline" size="large" color="medium"></ion-icon>
+    <ion-text color="medium">
+      <h3>No Orders Assigned</h3>
+      <p>You don't have any orders assigned to you at the moment.</p>
+    </ion-text>
+  </div>
+
+  <ion-list *ngIf="!isLoading && orders.length > 0">
+    <ion-card *ngFor="let order of orders" class="order-card">
+      <ion-card-header>
+        <ion-card-title>
+          Order #{{ order.tracking_id }}
+        </ion-card-title>
+        <ion-card-subtitle>
+          <ion-chip [color]="getStatusColor(order.status)" size="small">
+            <ion-icon name="time" *ngIf="order.status === 'pending'"></ion-icon>
+            <ion-icon name="checkmark-circle" *ngIf="order.status === 'accepted'"></ion-icon>
+            <ion-icon name="close-circle" *ngIf="order.status === 'cancelled'"></ion-icon>
+            {{ getStatusText(order.status) }}
+          </ion-chip>
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <!-- Customer Info -->
+        <ion-item lines="none">
+          <ion-icon name="person" slot="start" color="primary"></ion-icon>
+          <ion-label>
+            <h3>{{ order.user.name }}</h3>
+            <p>{{ order.user.email }}</p>
+          </ion-label>
+        </ion-item>
+
+        <!-- Pickup Location -->
+        <ion-item lines="none">
+          <ion-icon name="location" slot="start" color="secondary"></ion-icon>
+          <ion-label>
+            <h3>Pickup</h3>
+            <p>{{ order.pickup_location }}</p>
+          </ion-label>
+        </ion-item>
+
+        <!-- Delivery Location -->
+        <ion-item lines="none">
+          <ion-icon name="location" slot="start" color="tertiary"></ion-icon>
+          <ion-label>
+            <h3>Delivery</h3>
+            <p>{{ order.delivery_location }}</p>
+          </ion-label>
+        </ion-item>
+
+        <!-- Package Description -->
+        <ion-item lines="none" *ngIf="order.package_description">
+          <ion-icon name="cube" slot="start" color="medium"></ion-icon>
+          <ion-label>
+            <h3>Package</h3>
+            <p>{{ order.package_description }}</p>
+          </ion-label>
+        </ion-item>
+
+        <!-- Order Details -->
+        <ion-item lines="none">
+          <ion-icon name="cash" slot="start" color="success"></ion-icon>
+          <ion-label>
+            <h3>Cost: ${{ order.estimated_cost }}</h3>
+            <p>Created: {{ formatDate(order.created_at) }}</p>
+          </ion-label>
+        </ion-item>
+
+        <!-- Delivery Notes -->
+        <ion-item lines="none" *ngIf="order.notes">
+          <ion-icon name="chatbubble" slot="start" color="medium"></ion-icon>
+          <ion-label>
+            <h3>Notes</h3>
+            <p>{{ order.notes }}</p>
+          </ion-label>
+        </ion-item>
+
+        <!-- Action Buttons -->
+        <ion-item lines="none" class="action-buttons">
+          <ion-button
+            *ngIf="canAcceptOrder(order)"
+            fill="solid"
+            color="success"
+            (click)="acceptOrder(order.id)"
+            [disabled]="!hasLocationPermission">
+            <ion-icon name="checkmark-circle" slot="start"></ion-icon>
+            Accept Order
+          </ion-button>
+
+          <ion-button
+            *ngIf="canRejectOrder(order)"
+            fill="outline"
+            color="danger"
+            (click)="showRejectDialog(order.id)">
+            <ion-icon name="close-circle" slot="start"></ion-icon>
+            Reject
+          </ion-button>
+
+          <ion-button
+            *ngIf="order.status === 'accepted'"
+            fill="solid"
+            color="primary"
+            (click)="trackNow(order.id)"
+            [queryParams]="{ orderId: order.id }">
+            <ion-icon name="navigate" slot="start"></ion-icon>
+            Start Delivery
+          </ion-button>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  <!-- Rejection Alert -->
+  <ion-alert
+    [isOpen]="showRejectAlert"
+    header="Reject Order"
+    message="Please provide a reason for rejecting this order:"
+    [buttons]="alertButtons">
+    <ion-item>
+      <ion-label position="stacked">Reason (Optional)</ion-label>
+      <ion-textarea
+        [(ngModel)]="rejectReason"
+        placeholder="Enter rejection reason...">
+      </ion-textarea>
+    </ion-item>
+  </ion-alert>
+
+  <!-- Toast Notifications -->
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    [color]="toastColor"
+    duration="3000">
+  </ion-toast>
+</ion-content>

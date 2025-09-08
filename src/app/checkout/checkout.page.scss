@@ -1,0 +1,313 @@
+.container {
+  padding: var(--delivery-spacing);
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  min-height: 100vh;
+}
+ ion-content{
+    margin-top: 20px;
+  }
+// Card Styling
+ion-card {
+  border-radius: var(--delivery-border-radius);
+  box-shadow: 0 8px 32px var(--delivery-shadow);
+  margin-bottom: var(--delivery-spacing);
+  border: none;
+  background: var(--delivery-card-bg);
+  overflow: hidden;
+
+  ion-card-header {
+    background: linear-gradient(135deg, var(--delivery-gradient-start), var(--delivery-gradient-end));
+    color: white;
+    padding: 20px;
+
+    ion-card-title {
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin: 0;
+    }
+  }
+
+  ion-card-content {
+    padding: 20px;
+  }
+}
+
+// Cart Item Styling
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 16px 12px;
+    margin: 0 -12px;
+  }
+
+  .item-info {
+    flex: 1;
+    margin-right: 16px;
+
+    h4 {
+      margin: 0 0 8px 0;
+      font-weight: 600;
+      color: var(--ion-color-dark);
+      font-size: 1.1rem;
+    }
+
+    p {
+      margin: 0 0 8px 0;
+      color: var(--ion-color-medium);
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .stock-info {
+      display: inline-block;
+      background: #e8f5e8;
+      color: #2e7d32;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+  }
+
+  .item-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    min-width: 120px;
+
+    .price {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--ion-color-primary);
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      background: #f8f9fa;
+      border-radius: 20px;
+      padding: 4px;
+      gap: 4px;
+
+      ion-button {
+        --border-radius: 50%;
+        --padding-start: 8px;
+        --padding-end: 8px;
+        height: 32px;
+        width: 32px;
+
+        &[disabled] {
+          opacity: 0.4;
+        }
+
+        ion-icon {
+          font-size: 18px;
+        }
+      }
+
+      .quantity {
+        min-width: 30px;
+        text-align: center;
+        font-weight: 600;
+        color: var(--ion-color-dark);
+      }
+    }
+
+    ion-button[color="danger"] {
+      --border-radius: 8px;
+      --padding-start: 12px;
+      --padding-end: 12px;
+      height: 32px;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+// Empty Cart Styling
+.empty-cart {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--ion-color-medium);
+
+  p {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}
+
+// Total Section
+.total-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid #e9ecef;
+  text-align: right;
+
+  h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--ion-color-primary);
+    background: linear-gradient(135deg, var(--delivery-gradient-start), var(--delivery-gradient-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+// Map Container
+.map-container {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Form Styling
+ion-item {
+  --border-radius: 12px;
+  --background: #f8f9fa;
+  --border-color: transparent;
+  margin-bottom: 12px;
+  border-radius: 12px;
+
+  &.item-has-focus {
+    --background: white;
+    box-shadow: 0 0 0 2px var(--ion-color-primary);
+  }
+
+  ion-label {
+    font-weight: 600;
+    color: var(--ion-color-dark);
+  }
+
+  ion-input, ion-textarea {
+    --color: var(--ion-color-dark);
+    --placeholder-color: var(--ion-color-medium);
+  }
+}
+
+// Checkout Actions
+.checkout-actions {
+  margin-top: 24px;
+  padding: 0 4px;
+
+  ion-button {
+    --border-radius: 16px;
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, var(--delivery-gradient-start), var(--delivery-gradient-end));
+    box-shadow: 0 8px 24px var(--delivery-shadow);
+    transition: all 0.3s ease;
+
+    &:hover:not([disabled]) {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px var(--delivery-shadow);
+    }
+
+    &[disabled] {
+      opacity: 0.6;
+      transform: none;
+    }
+
+    ion-spinner {
+      margin-right: 8px;
+    }
+  }
+}
+
+// Empty State
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+
+  ion-button {
+    --border-radius: 16px;
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+    font-weight: 600;
+    margin-top: 20px;
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .container {
+    padding: 12px;
+  }
+
+  .cart-item {
+    flex-direction: column;
+    align-items: stretch;
+
+    .item-details {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      min-width: auto;
+
+      .quantity-controls {
+        order: 2;
+      }
+
+      .price {
+        order: 1;
+      }
+
+      ion-button[color="danger"] {
+        order: 3;
+      }
+    }
+  }
+}
+
+// Animation Classes
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

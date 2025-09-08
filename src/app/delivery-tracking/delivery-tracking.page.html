@@ -1,0 +1,171 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+  
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="tracking-container">
+    <!-- Map Section -->
+    <google-map
+      [center]="pickupLocation"
+      [zoom]="mapOptions.zoom || 14"
+      [options]="mapOptions"
+      (mapInitialized)="onMapInitialized($event)"
+      class="map-container">
+    </google-map>
+
+    <!-- Delivery Status Card -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          {{ 'delivery_status' | translate }}
+          <ion-badge [color]="getStatusColor()" style="margin-left: 8px;">
+            {{ getStatusText() }}
+          </ion-badge>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>{{ 'estimated_time' | translate }}:</strong> {{ estimatedTime }}</p>
+        <p><strong>{{ 'distance' | translate }}:</strong> {{ deliveryDetails.distance }}</p>
+        
+        <!-- Real-time Tracking Status -->
+        <ion-item>
+          <ion-label>
+            <ion-spinner *ngIf="isTrackingActive" name="dots"></ion-spinner>
+            <strong>{{ 'real_time_tracking' | translate }}:</strong>
+            <span [style.color]="connectionStatus === 'connected' ? 'green' : connectionStatus === 'connecting' ? 'orange' : connectionStatus === 'processing' ? 'blue' : 'red'">
+              {{ connectionStatus === 'connected' ? '🟢 Connected' :
+                 connectionStatus === 'connecting' ? '🟡 Connecting...' :
+                 connectionStatus === 'processing' ? '🔵 Your order is being processed' :
+                 '🔴 Disconnected' }}
+            </span>
+          </ion-label>
+        </ion-item>
+
+        <!-- Last Update Information -->
+        <ion-item *ngIf="isTrackingActive">
+          <ion-label>
+            <strong>Last Update:</strong>
+            <p>{{ lastLocationUpdate | date:'shortTime' }} ({{ getTimeSinceLastUpdate() }})</p>
+            <small>Updates: {{ updateCount }} | Accuracy: ±{{ locationAccuracy }}m</small>
+          </ion-label>
+        </ion-item>
+        
+        <ion-button expand="block" color="primary" (click)="startLiveTracking()"
+                   [disabled]="deliveryStatus === 'delivered'">
+          {{ deliveryStatus === 'delivered' ? 'Delivery Complete' : 'Track Delivery' }}
+        </ion-button>
+
+        <ion-button expand="block" color="tertiary" (click)="switchVehicleType()" 
+                   fill="outline" style="margin-top: 8px;">
+          Switch Vehicle Type
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Driver Information (for customers) -->
+    <ion-card *ngIf="!isWorker">
+      <ion-card-header>
+        <ion-card-title>{{ 'driver_information' | translate }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label>
+            <h3>{{ driverInfo.name }}</h3>
+            <app-rating
+              [rating]="driverInfo.rating ?? 0"
+              [readonly]="true"
+              [size]="'small'"
+              [showValue]="true"
+            ></app-rating>
+            <p>{{ driverInfo.vehicle }} ({{ driverInfo.licensePlate }})</p>
+            <p>{{ driverInfo.phone }}</p>
+            <p>
+              Location: {{ driverInfo.currentLatitude | number:'1.4-4' }},
+              {{ driverInfo.currentLongitude | number:'1.4-4' }}
+            </p>
+          </ion-label>
+        </ion-item>
+        <ion-button expand="block" color="secondary" (click)="callDriver()">
+          📞 Call Driver
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Customer Information (for workers) -->
+    <ion-card *ngIf="isWorker">
+      <ion-card-header>
+        <ion-card-title>Customer Information</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label>
+            <h3>{{ customerInfo.name }}</h3>
+            <p>{{ customerInfo.email }}</p>
+            <p>{{ customerInfo.phone }}</p>
+            <p><strong>Delivery Address:</strong> {{ customerInfo.delivery_address }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-button expand="block" color="secondary" (click)="callDriver()" *ngIf="customerInfo.phone">
+          📞 Call Customer
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Delivery Details -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ 'delivery_details' | translate }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label>
+            <h3>From</h3>
+            <p>{{ deliveryDetails.from }}</p>
+          </ion-label>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label>
+            <h3>To</h3>
+            <p>{{ deliveryDetails.to }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <h3>Items</h3>
+            <p>{{ deliveryDetails.items.join(', ') }}</p>
+          </ion-label>
+        </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Tracking Controls -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ 'tracking_controls' | translate }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-button expand="block" color="danger" (click)="stopLocationTracking()" *ngIf="isTrackingActive">
+        🛑 Stop Real-time Tracking
+      </ion-button>
+      
+      <!-- <ion-button expand="block" color="success" (click)="startLocationTracking()" *ngIf="!isTrackingActive">
+        ▶️ Start Real-time Tracking
+      </ion-button>
+
+     
+      <ion-button expand="block" color="tertiary" (click)="manualSimulateWorkerMovement()" style="margin-top: 8px;">
+        🚚 Simulate Worker Movement (Test)
+      </ion-button> -->
+
+      <!-- New button to log debug info -->
+      <!-- <ion-button expand="block" color="medium" (click)="logDebugInfo()" style="margin-top: 8px;">
+        🐞 Log Debug Info
+      </ion-button> -->
+    </ion-card-content>
+  </ion-card>
+</div>
+</ion-content>

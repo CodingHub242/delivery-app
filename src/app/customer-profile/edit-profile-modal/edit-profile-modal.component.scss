@@ -1,0 +1,42 @@
+.form-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.error-message {
+  background: var(--ion-color-danger-tint);
+  color: var(--ion-color-danger);
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.save-button {
+  margin-top: 24px;
+}
+
+ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 16px;
+}
+
+ion-label[position="stacked"] {
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--ion-color-dark);
+}
+
+ion-input {
+  --padding-start: 12px;
+  --padding-end: 12px;
+  border: 1px solid var(--ion-color-medium-shade);
+  border-radius: 8px;
+  background: var(--ion-color-light);
+}
+
+ion-input:focus-within {
+  border-color: var(--ion-color-primary);
+  box-shadow: 0 0 0 2px var(--ion-color-primary-tint);
+}

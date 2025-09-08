@@ -1,0 +1,26 @@
+.profile-section {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+}
+
+.profile-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.contact-info {
+  flex: 1;
+}
+
+.loading-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.error-container {
+  text-align: center;
+  margin-top: 20px;
+}

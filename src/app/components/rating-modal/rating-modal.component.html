@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Rate {{ workerName }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()" [disabled]="submitting">Cancel</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="rating-modal-content">
+    <div class="rating-section">
+      <h3>How would you rate your experience?</h3>
+      <app-rating
+        [rating]="rating"
+        [readonly]="false"
+        [size]="'large'"
+        [showValue]="true"
+        (ratingChange)="onRatingChange($event)"
+      ></app-rating>
+    </div>
+
+    <div class="review-section">
+      <ion-item>
+        <ion-label position="stacked">Review (Optional)</ion-label>
+        <ion-textarea
+          [(ngModel)]="review"
+          placeholder="Share your experience with this worker..."
+          rows="4"
+          maxlength="500"
+        ></ion-textarea>
+      </ion-item>
+      <ion-text color="medium" slot="helper">
+        {{ review.length }}/500 characters
+      </ion-text>
+    </div>
+
+    <div class="submit-section">
+      <ion-button
+        expand="block"
+        (click)="submitRating()"
+        [disabled]="rating === 0 || submitting"
+      >
+        <ion-spinner *ngIf="submitting" slot="start"></ion-spinner>
+        {{ submitting ? 'Submitting...' : 'Submit Rating' }}
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,77 @@
+<div class="notification-form">
+  <h3>{{ isEditMode ? 'Edit Notification' : 'Add New Notification' }}</h3>
+  
+  <form (ngSubmit)="onSubmit($event)">
+    <ion-item>
+      <ion-label position="stacked">Title *</ion-label>
+      <ion-input 
+        type="text" 
+        [(ngModel)]="notification.title" 
+        name="title" 
+        required
+        placeholder="Enter notification title">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Message *</ion-label>
+      <ion-textarea 
+        [(ngModel)]="notification.message" 
+        name="message" 
+        required
+        placeholder="Enter notification message"
+        rows="4">
+      </ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Image URL</ion-label>
+      <ion-input 
+        type="url" 
+        [(ngModel)]="notification.image_url" 
+        name="image_url"
+        placeholder="https://example.com/image.jpg">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Start Date</ion-label>
+      <ion-datetime 
+        [value]="notification.start_date" 
+        (ionChange)="notification.start_date = $event.detail.value ? $event.detail.value.toString() : undefined"
+        name="start_date"
+        presentation="date"
+        placeholder="Select start date">
+      </ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">End Date</ion-label>
+      <ion-datetime 
+        [value]="notification.end_date" 
+        (ionChange)="notification.end_date = $event.detail.value ? $event.detail.value.toString() : undefined"
+        name="end_date"
+        presentation="date"
+        placeholder="Select end date">
+      </ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-toggle 
+        [(ngModel)]="notification.is_active" 
+        name="is_active"
+        checked="true">
+        Active Notification
+      </ion-toggle>
+    </ion-item>
+
+    <div class="form-actions">
+      <ion-button type="button" fill="outline" (click)="onCancel()">
+        Cancel
+      </ion-button>
+      <ion-button type="submit" color="primary" [disabled]="saving">
+        {{ isEditMode ? 'Update' : 'Create' }} Notification
+      </ion-button>
+    </div>
+  </form>
+</div>

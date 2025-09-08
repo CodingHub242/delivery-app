@@ -1,0 +1,70 @@
+<div class="notification-management">
+  <div class="header">
+    <h2>Promotional Notifications</h2>
+    <ion-button class="add-button" (click)="openAddNotificationModal()">
+      Add New Notification
+    </ion-button>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading notifications...</p>
+  </div>
+
+  <div class="error" *ngIf="error && !loading">
+    <p>{{ error }}</p>
+    <ion-button (click)="loadNotifications()">Retry</ion-button>
+  </div>
+
+  <div class="empty-state" *ngIf="!loading && !error && notifications.length === 0">
+    <p>No promotional notifications found.</p>
+    <ion-button (click)="openAddNotificationModal()">Create Your First Notification</ion-button>
+  </div>
+
+  <div class="notifications-list" *ngIf="!loading && notifications.length > 0">
+    <div class="notification-item" *ngFor="let notification of notifications">
+      <div class="notification-content">
+        <div class="notification-header">
+          <h3>{{ notification.title }}</h3>
+          <div class="status-badge" [class.active]="notification.is_active" [class.inactive]="!notification.is_active">
+            {{ notification.is_active ? 'Active' : 'Inactive' }}
+          </div>
+        </div>
+        
+        <p class="notification-message">{{ notification.message }}</p>
+        
+        <div class="notification-meta">
+          <span *ngIf="notification.image_url" class="has-image">Includes Image</span>
+          <span class="dates">
+            <span *ngIf="notification.start_date">Starts: {{ notification.start_date | date:'shortDate' }}</span>
+            <span *ngIf="notification.end_date">Ends: {{ notification.end_date | date:'shortDate' }}</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="notification-actions">
+        <ion-button (click)="editNotification(notification)" class="edit-btn">
+          Edit
+        </ion-button>
+        <ion-button color="danger" (click)="deleteNotification(notification.id!)" class="delete-btn">
+          Delete
+        </ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Form Modal -->
+  <ion-modal [isOpen]="isModalOpen" (didDismiss)="closeModal()">
+    <ng-template>
+      <div class="modal-content">
+        <app-notification-form
+          [notification]="currentNotification"
+          [isEditMode]="isEditMode"
+          [saving]="saving"
+          (save)="saveNotification($event)"
+          (cancel)="closeModal()">
+        </app-notification-form>
+      </div>
+    </ng-template>
+  </ion-modal>
+</div>

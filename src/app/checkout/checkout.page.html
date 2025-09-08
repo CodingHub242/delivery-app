@@ -1,0 +1,114 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <!-- Order Summary -->
+    <ion-card style="margin-top: 20px;">
+      <ion-card-header>
+        <ion-card-title>{{ 'order_summary' | translate }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div *ngIf="cartItems.length === 0" class="empty-cart">
+          <p>{{ 'cart_empty' | translate }}</p>
+        </div>
+
+        <div *ngFor="let item of cartItems" class="cart-item">
+          <div class="item-info">
+            <h4>{{ item.product.name }}</h4>
+            <p>{{ item.product.description }}</p>
+            <small *ngIf="item.product.stock_quantity" class="stock-info">
+              Stock: {{ item.product.stock_quantity }} available
+            </small>
+          </div>
+          <div class="item-details">
+            <span class="price">{{ item.product.base_price * item.quantity | localCurrency }}</span>
+            <div class="quantity-controls">
+              <ion-button 
+                fill="clear" 
+                size="small" 
+                (click)="decreaseQuantity(item.id)"
+                [disabled]="item.quantity <= 1"
+              >
+                <ion-icon name="remove-circle-outline" slot="icon-only"></ion-icon>
+              </ion-button>
+              
+              <span class="quantity">{{ item.quantity }}</span>
+              
+              <ion-button 
+                fill="clear" 
+                size="small" 
+                (click)="increaseQuantity(item.id)"
+                [disabled]="item.quantity >= (item.product.stock_quantity || 999)"
+              >
+                <ion-icon name="add-circle-outline" slot="icon-only"></ion-icon>
+              </ion-button>
+            </div>
+
+            <!-- <span class="quantity">x{{ item.quantity }}</span> -->
+            
+            <ion-button size="small" color="danger" (click)="removeFromCart(item.id)">
+              {{ 'remove' | translate }}
+            </ion-button>
+          </div>
+        </div>
+
+        <div class="total-section" *ngIf="cartItems.length > 0">
+          <h3>{{ 'total' | translate }}: {{ totalAmount | localCurrency }}</h3>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Delivery Information -->
+    <ion-card *ngIf="cartItems.length > 0">
+      <ion-card-header>
+        <ion-card-title>{{ 'delivery_information' | translate }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ 'drag_marker_or_tap' | translate }}</p>
+        <div id="checkout-mapp" class="map-container" style="height: 300px; width: 100%; margin-top: 10px;"></div>
+        <ion-item>
+          <ion-label position="stacked">{{ 'delivery_address' | translate }} *</ion-label>
+          <ion-input 
+            [(ngModel)]="deliveryAddress" 
+            placeholder="{{ 'enter_delivery_address' | translate }}"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">{{ 'delivery_instructions' | translate }}</ion-label>
+          <ion-textarea 
+            [(ngModel)]="deliveryInstructions" 
+            placeholder="{{ 'special_instructions' | translate }}"
+            rows="3"
+          ></ion-textarea>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Checkout Button -->
+    <div class="checkout-actions" *ngIf="cartItems.length > 0">
+      <ion-button 
+        expand="block" 
+        color="primary" 
+        (click)="proceedToCheckout()"
+        [disabled]="loading || !deliveryAddress"
+      >
+        <ion-spinner *ngIf="loading"></ion-spinner>
+        {{ loading ? 'processing' : 'place_order' | translate }}
+      </ion-button>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="cartItems.length === 0" class="empty-state">
+      <ion-button expand="block" (click)="router.navigate(['/home'])">
+        {{ 'continue_shopping' | translate }}
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+  
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="loading" class="loading-container">
+    <ion-spinner></ion-spinner>
+    <p>Loading messages...</p>
+  </div>
+
+  <div *ngIf="!loading" class="chat-container">
+    <div class="chat-header">
+      <h3>Chat Support</h3>
+    </div>
+
+    <div #messageContainer class="messages-container">
+      <div *ngFor="let message of messages" class="message" [class.my-message]="isMyMessage(message.sender_id)">
+        <div class="message-content">
+          <p class="message-text">{{ message.message }}</p>
+          <span class="message-time">{{ formatTime(message.created_at) }}</span>
+        </div>
+        <div class="message-meta">
+          <span class="message-sender">{{ getSenderName(message) }}</span>
+          <span *ngIf="!isMyMessage(message.sender_id)" class="message-role">(Support)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="message-input-container">
+      <ion-item>
+        <ion-textarea
+          id="messageInput"
+          [(ngModel)]="newMessage"
+          placeholder="Type your message..."
+          rows="1"
+          autoGrow="true"
+          (keydown.enter)="onEnterKey($event)"
+          (input)="onUserTyping()"
+        ></ion-textarea>
+        <ion-button slot="end" fill="clear" (click)="sendMessage()" >
+          <ion-icon name="send"></ion-icon>
+          Send Message  
+        </ion-button>
+      </ion-item>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !messages.length" class="no-chat-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>No Messages</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Start chatting with support!</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

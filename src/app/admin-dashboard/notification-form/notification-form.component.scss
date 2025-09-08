@@ -1,0 +1,98 @@
+.notification-form {
+  padding: 16px;
+  height: calc(85vh - 32px);
+  overflow-y: scroll;
+  
+  h3 {
+    margin: 0 0 20px 0;
+    color: var(--ion-color-primary);
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-align: center;
+  }
+   ion-content{
+    margin-top: 20px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    
+    ion-label[position="stacked"] {
+      font-weight: 500;
+      color: var(--ion-color-dark);
+      margin-bottom: 8px;
+    }
+    
+    ion-input,
+    ion-textarea {
+      --padding-start: 12px;
+      --padding-end: 12px;
+      --padding-top: 12px;
+      --padding-bottom: 12px;
+      border: 1px solid var(--ion-color-medium-shade);
+      border-radius: 8px;
+      background: var(--ion-color-light);
+      
+      &:focus-within {
+        border-color: var(--ion-color-primary);
+        box-shadow: 0 0 0 2px rgba(var(--ion-color-primary-rgb), 0.2);
+      }
+    }
+    
+    ion-datetime {
+      --padding-start: 12px;
+      --padding-end: 12px;
+      --padding-top: 12px;
+      --padding-bottom: 12px;
+      border: 1px solid var(--ion-color-medium-shade);
+      border-radius: 8px;
+      background: var(--ion-color-light);
+      width: 100%;
+      
+      &:focus-within {
+        border-color: var(--ion-color-primary);
+        box-shadow: 0 0 0 2px rgba(var(--ion-color-primary-rgb), 0.2);
+      }
+    }
+    
+    ion-toggle {
+      --handle-background-checked: var(--ion-color-primary);
+      --track-background-checked: var(--ion-color-primary-tint);
+    }
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 20px;
+    
+    ion-button {
+      --border-radius: 8px;
+      font-weight: 600;
+      min-width: 120px;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .notification-form {
+    padding: 12px;
+    
+    .form-actions {
+      flex-direction: column;
+      
+      ion-button {
+        width: 100%;
+      }
+    }
+  }
+}

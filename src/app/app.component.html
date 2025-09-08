@@ -1,3 +1,21 @@
 <ion-app>
+  <!-- Header with User Dropdown -->
+  <ion-header *ngIf="shouldShowHeader() && currentUser">
+    <ion-toolbar>
+      <ion-title>ServiceHub</ion-title>
+      <ion-buttons slot="end">
+        <!-- User Dropdown -->
+        <div class="user-dropdown">
+          <ion-button (click)="presentPopover($event)" fill="clear">
+            <ion-icon name="person-circle" slot="start"></ion-icon>
+            {{ currentUser?.name || currentUser?.email }}
+            <ion-icon name="chevron-down" slot="end"></ion-icon>
+          </ion-button>
+        </div>
+        <app-cart-icon></app-cart-icon>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
   <ion-router-outlet></ion-router-outlet>
 </ion-app>

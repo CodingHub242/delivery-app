@@ -1,0 +1,46 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{ 'service_details' | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div *ngIf="loading" class="loading-section">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>{{ 'loading_service_details' | translate }}</p>
+  </div>
+
+  <div *ngIf="error && !loading" class="error-section">
+    <ion-card color="danger">
+      <ion-card-content>
+        <ion-icon name="warning" size="large"></ion-icon>
+        <p>{{ error }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="!loading && !error && service" class="service-details">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ service.name | translate }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ service.description ? (service.description | translate) : ('no_description_available' | translate) }}</p>
+        <div class="service-price">
+          <strong>{{ 'base_price' | translate }}: {{ service.base_price | localCurrency }}</strong>
+        </div>
+        <div class="service-distance" *ngIf="service.distance_rate > 0">
+          <small>+ {{ service.distance_rate | localCurrency }} {{ 'per_mile_over' | translate }}</small>
+        </div>
+        <ion-button expand="full" (click)="requestService()">
+          {{ 'request_service' | translate }}
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

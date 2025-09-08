@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()" fill="clear">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Edit Profile</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="saveProfile()" [disabled]="loading || !isFormValid()" fill="clear">
+        <ion-icon *ngIf="!loading" slot="icon-only" name="checkmark"></ion-icon>
+        <ion-spinner *ngIf="loading" slot="icon-only"></ion-spinner>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="form-container">
+    <!-- Error message -->
+    <div *ngIf="error" class="error-message ion-margin-bottom">
+      {{ error }}
+    </div>
+
+    <!-- Name field -->
+    <ion-item>
+      <ion-label position="stacked">Full Name *</ion-label>
+      <ion-input 
+        type="text" 
+        [(ngModel)]="user.name" 
+        placeholder="Enter your full name"
+        required>
+      </ion-input>
+    </ion-item>
+
+    <!-- Email field -->
+    <ion-item>
+      <ion-label position="stacked">Email Address *</ion-label>
+      <ion-input 
+        type="email" 
+        [(ngModel)]="user.email" 
+        placeholder="Enter your email address"
+        required>
+      </ion-input>
+    </ion-item>
+
+    <!-- Phone field -->
+    <ion-item>
+      <ion-label position="stacked">Phone Number</ion-label>
+      <ion-input 
+        type="tel" 
+        [(ngModel)]="user.phone" 
+        placeholder="Enter your phone number">
+      </ion-input>
+    </ion-item>
+
+    <!-- Save button -->
+    <ion-button 
+      expand="block" 
+      (click)="saveProfile()" 
+      [disabled]="loading || !isFormValid()"
+      class="save-button">
+      <ion-spinner *ngIf="loading" slot="start"></ion-spinner>
+      {{ loading ? 'Saving...' : 'Save Changes' }}
+    </ion-button>
+  </div>
+</ion-content>

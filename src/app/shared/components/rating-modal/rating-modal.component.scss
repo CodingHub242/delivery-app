@@ -1,0 +1,90 @@
+.rating-modal-content {
+  padding: 20px;
+
+  .worker-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+
+    .worker-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .worker-details {
+      flex: 1;
+
+      h3 {
+        margin: 0 0 4px 0;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      p {
+        margin: 0;
+        color: #666;
+        font-size: 14px;
+      }
+    }
+  }
+
+  .rating-section {
+    text-align: center;
+    margin-bottom: 24px;
+
+    h4 {
+      margin-bottom: 16px;
+      color: #333;
+    }
+  }
+
+  .review-section {
+    margin-bottom: 24px;
+
+    .character-count {
+      font-size: 12px;
+      display: block;
+      text-align: right;
+      margin-top: 4px;
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+
+    ion-button {
+      flex: 1;
+      --border-radius: 8px;
+      font-weight: 600;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 576px) {
+  .rating-modal-content {
+    padding: 16px;
+
+    .worker-info {
+      gap: 12px;
+      padding: 12px;
+
+      .worker-avatar {
+        width: 50px;
+        height: 50px;
+      }
+
+      .worker-details h3 {
+        font-size: 16px;
+      }
+    }
+  }
+}

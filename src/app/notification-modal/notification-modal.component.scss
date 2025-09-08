@@ -1,0 +1,72 @@
+.notification-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-align: center;
+}
+
+.notification-image {
+  margin-bottom: 20px;
+  
+  .image-preview {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.notification-text {
+  flex: 1;
+  margin-bottom: 24px;
+  
+  .notification-title {
+    color: var(--ion-color-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  
+  .notification-message {
+    color: var(--ion-color-dark);
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
+.notification-actions {
+  .close-button {
+    --border-radius: 8px;
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+    font-weight: 600;
+  }
+}
+
+// Modal customization
+.notification-modal {
+  --width: 90%;
+  --max-width: 400px;
+  --height: auto;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .notification-modal {
+    --width: 95%;
+    --max-width: 350px;
+  }
+  
+  .notification-text {
+    .notification-title {
+      font-size: 1.3rem;
+    }
+    
+    .notification-message {
+      font-size: 0.9rem;
+    }
+  }
+}

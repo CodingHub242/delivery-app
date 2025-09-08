@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Admin Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Admin Portal</ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <form (ngSubmit)="login()">
+          <ion-item>
+            <ion-label position="stacked">Email</ion-label>
+            <ion-input 
+              type="email" 
+              [(ngModel)]="loginRequest.email" 
+              name="email" 
+              required
+              placeholder="Enter admin email">
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Password</ion-label>
+            <ion-input 
+              type="password" 
+              [(ngModel)]="loginRequest.password" 
+              name="password" 
+              required
+              placeholder="Enter password">
+            </ion-input>
+          </ion-item>
+
+          <div class="ion-margin-top">
+            <ion-button 
+              type="submit" 
+              expand="block" 
+              [disabled]="isLoading">
+              {{ isLoading ? 'Logging in...' : 'Admin Login' }}
+            </ion-button>
+          </div>
+        </form>
+
+        <ion-text color="danger" *ngIf="errorMessage">
+          <p class="error-message">{{ errorMessage }}</p>
+        </ion-text>
+
+        <div class="ion-margin-top ion-text-center">
+          <p>
+            <a (click)="navigateToRegularLogin()" class="link">Regular User Login</a>
+          </p>
+          <p>
+            <a (click)="navigateToRegister()" class="link">Create New Account</a>
+          </p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

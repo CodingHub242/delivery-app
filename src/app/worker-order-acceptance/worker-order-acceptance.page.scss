@@ -1,0 +1,149 @@
+.worker-order-acceptance-page {
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+
+    ion-spinner {
+      margin-bottom: 1rem;
+    }
+  }
+
+  ion-content{
+    margin-top: 20%;
+  }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    text-align: center;
+
+    ion-icon {
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    h3 {
+      margin: 0.5rem 0;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0.25rem 0;
+      color: var(--ion-color-medium);
+    }
+  }
+
+  .order-card {
+    margin: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    ion-card-header {
+      padding-bottom: 0.5rem;
+
+      ion-card-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--ion-color-primary);
+      }
+
+      ion-card-subtitle {
+        margin-top: 0.5rem;
+      }
+    }
+
+    ion-card-content {
+      padding-top: 0;
+
+      ion-item {
+        --inner-padding-end: 0;
+        --inner-padding-start: 0;
+        --padding-start: 16px;
+        --padding-end: 16px;
+
+        ion-icon {
+          margin-right: 0.75rem;
+          font-size: 1.2rem;
+        }
+
+        ion-label {
+          h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--ion-text-color);
+          }
+
+          p {
+            font-size: 0.9rem;
+            margin: 0.25rem 0 0 0;
+            color: var(--ion-color-medium);
+          }
+        }
+      }
+
+      .action-buttons {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--ion-color-light-shade);
+
+        ion-button {
+          margin: 0 0.25rem;
+          --border-radius: 8px;
+
+          &:first-child {
+            margin-left: 0;
+          }
+
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+  }
+
+  // Responsive design
+  @media (max-width: 576px) {
+    .order-card {
+      margin: 0.5rem;
+
+      ion-card-content {
+        ion-item {
+          --padding-start: 12px;
+          --padding-end: 12px;
+
+          ion-icon {
+            margin-right: 0.5rem;
+            font-size: 1.1rem;
+          }
+        }
+
+        .action-buttons {
+          ion-button {
+            font-size: 0.9rem;
+            padding: 0.5rem 0.75rem;
+
+            ion-icon {
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Dark mode support
+  @media (prefers-color-scheme: dark) {
+    .order-card {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+  }
+}

@@ -1,0 +1,43 @@
+.rating-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.rating-section {
+  text-align: center;
+
+  h3 {
+    margin-bottom: 1rem;
+    color: var(--ion-color-primary);
+    font-weight: 600;
+  }
+}
+
+.review-section {
+  ion-item {
+    --border-radius: 8px;
+    --padding-start: 0;
+    --inner-padding-end: 0;
+  }
+
+  ion-textarea {
+    --border-radius: 8px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+  }
+}
+
+.submit-section {
+  margin-top: 1rem;
+
+  ion-button {
+    --border-radius: 8px;
+    height: 48px;
+    font-weight: 600;
+  }
+}

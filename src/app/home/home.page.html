@@ -1,20 +1,133 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">{{ 'welcome_to_servicehub' | translate }}</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <div class="container">
+    <div class="welcome-section">
+      <h1>{{ 'welcome_to_servicehub' | translate }}</h1>
+      <p>{{ 'choose_services' | translate }}</p>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-section">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>{{ 'loading_services' | translate }}</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !loading" class="error-section">
+      <ion-card color="danger">
+        <ion-card-content>
+          <ion-icon name="warning" size="large"></ion-icon>
+          <p>{{ error }}</p>
+          <ion-button (click)="loadServices()" fill="clear">
+            {{ 'try_again' | translate }}
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Services Grid -->
+    <div *ngIf="!loading && !error" class="services-grid">
+      <ion-grid>
+        <ion-row>
+          <ion-col 
+            size="12" 
+            size-md="6" 
+            size-lg="4" 
+            *ngFor="let service of services"
+          >
+            <ion-card class="service-card" (click)="selectService(service)">
+              <ion-card-header>
+                <div class="service-icon">
+                  <ion-icon [name]="getServiceIcon(service.name)" size="large"></ion-icon>
+                </div>
+                <ion-card-title>{{ service.name }}</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <p class="service-description">{{ service.description || ('professional_service' | translate) }}</p>
+                <div class="service-price">
+                  <strong>{{ 'from' | translate }}: {{ service.base_price | localCurrency }}</strong>
+                </div>
+                <div class="service-distance" *ngIf="service.distance_rate > 0">
+                  <small>+ {{ service.distance_rate | localCurrency }}{{ 'per_mile_over' | translate }}</small>
+                </div>
+                <ion-button expand="block" color="primary">
+                  {{ 'select_service' | translate }}
+                </ion-button>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <div class="shop-products">
+      <h2>{{ 'shop_products' | translate }}</h2>
+      <ion-grid>
+        <ion-row>
+          <ion-col 
+            size="12" 
+            size-md="6" 
+            size-lg="4" 
+            *ngFor="let product of shopProducts"
+          >
+            <ion-card class="product-card">
+              <ion-card-header>
+                <ion-card-title>{{ product.name }}</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <img *ngIf="product.image_url" [src]="product.image_url" alt="{{ product.name }}" />
+                <p>{{ product.description || ('no_description_available' | translate) }}</p>
+                <p>Stock : {{ product.stock_quantity || ('no_stock_available' | translate) }}</p>
+                <div class="product-price">
+                  <strong>{{ product.base_price | localCurrency }}</strong>
+                </div>
+                <ion-button expand="block" (click)="addToCart(product)">
+                  {{ 'add_to_cart' | translate }}
+                </ion-button>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <!-- No Services Available -->
+    <div *ngIf="!loading && !error && services.length === 0" class="no-services">
+      <ion-card>
+        <ion-card-content>
+          <ion-icon name="alert-circle" size="large"></ion-icon>
+          <h3>{{ 'no_services_available' | translate }}</h3>
+          <p>{{ 'check_back_later' | translate }}</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
   </div>
+
+  <!-- Success Toast Notification -->
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    [duration]="3000"
+    (didDismiss)="showToast = false"
+    position="bottom"
+    color="success">
+  </ion-toast>
+
+  <!-- Chat FAB Button -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="navigateToChat()">
+      <ion-icon name="chatbubble"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

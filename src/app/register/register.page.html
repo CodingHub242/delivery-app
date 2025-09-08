@@ -1,0 +1,91 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Register</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="register-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Create Account</ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <form (ngSubmit)="register()">
+          <ion-item>
+            <ion-label position="stacked">Full Name</ion-label>
+            <ion-input 
+              type="text" 
+              [(ngModel)]="registerRequest.name" 
+              name="name" 
+              required
+              placeholder="Enter your full name">
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Email</ion-label>
+            <ion-input 
+              type="email" 
+              [(ngModel)]="registerRequest.email" 
+              name="email" 
+              required
+              placeholder="Enter your email">
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Phone (Optional)</ion-label>
+            <ion-input 
+              type="tel" 
+              [(ngModel)]="registerRequest.phone" 
+              name="phone" 
+              placeholder="Enter your phone number">
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Password</ion-label>
+            <ion-input 
+              type="password" 
+              [(ngModel)]="registerRequest.password" 
+              name="password" 
+              required
+              placeholder="Create a password">
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Account Type</ion-label>
+            <ion-select 
+              [(ngModel)]="registerRequest.role" 
+              name="role"
+              interface="popover">
+              <ion-select-option value="customer">Customer</ion-select-option>
+              <ion-select-option value="worker">Service Worker</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <div *ngIf="errorMessage" class="error-message">
+            {{ errorMessage }}
+          </div>
+
+          <ion-button 
+            type="submit" 
+            expand="block" 
+            [disabled]="isLoading"
+            class="register-button">
+            {{ isLoading ? 'Creating Account...' : 'Create Account' }}
+          </ion-button>
+        </form>
+
+        <div class="login-link">
+          <p>Already have an account? 
+            <a (click)="navigateToLogin()" class="link">Login here</a>
+          </p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

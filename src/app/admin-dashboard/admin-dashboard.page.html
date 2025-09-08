@@ -1,0 +1,467 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Admin Dashboard</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Service Management Card -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Service Management</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-button expand="full" (click)="openAddServiceModal()">Add Service</ion-button>
+      <ion-list>
+        <ion-item *ngFor="let service of services">
+          <ion-label>
+            <h2>{{ service.name }}</h2>
+            <p>{{ service.description }}</p>
+            <p>Base Price: GHS{{ service.base_price }}</p>
+            <p>Distance Rate: GHS{{ service.distance_rate }}/km</p>
+          </ion-label>
+          <ion-button (click)="updateService(service.id)">Update</ion-button>
+          <ion-button color="danger" (click)="deleteService(service.id)">Delete</ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Worker Management Card -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Worker Management</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-button expand="full" (click)="openAddWorkerModal()">Add Worker</ion-button>
+      <ion-list>
+        <ion-item *ngFor="let worker of workers">
+          <ion-label>
+            <h2>{{ worker.name }}</h2>
+            <p>Phone: {{ worker.phone_number }}</p>
+            <p *ngIf="worker.worker_type === 'delivery_driver'">Vehicle: {{ worker.vehicle_type }} ({{ worker.vehicle_plate }})</p>
+            <p *ngIf="worker.worker_type === 'service_worker'">Service: {{ worker.service_type }}</p>
+            <p>Available: {{ worker.is_available ? 'Yes' : 'No' }}</p>
+          </ion-label>
+          <ion-button (click)="updateWorker(worker.id)">Update</ion-button>
+          <ion-button color="danger" (click)="deleteWorker(worker.id)">Delete</ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Product Management Card -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Product Management</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-button expand="full" (click)="openAddProductModal()">Add Product</ion-button>
+      <ion-list>
+        <ion-item *ngFor="let product of products">
+          <ion-label>
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.description }}</p>
+            <p>Price: GHS{{ product.base_price }}</p>
+            <p>Stock: {{ product.stock_quantity }}</p>
+          </ion-label>
+          <ion-button (click)="updateProduct(product.id)">Update</ion-button>
+          <ion-button color="danger" (click)="deleteProduct(product.id)">Delete</ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Service Requests Section -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Service Requests</ion-card-title>
+      <ion-button fill="clear" (click)="loadServiceRequests()" [disabled]="loadingServiceRequests">
+        <ion-icon name="refresh" *ngIf="!loadingServiceRequests"></ion-icon>
+        <ion-icon name="refresh-circle" *ngIf="loadingServiceRequests"></ion-icon>
+      </ion-button>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let request of serviceRequests">
+          <ion-label>
+            <h2>Service Request #{{ request.id }}</h2>
+            <p>Service: {{ request.service?.name || 'N/A' }}</p>
+            <p>User: {{ request.user?.name || 'N/A' }}</p>
+            <p>Status: <ion-badge [color]="request.status === 'pending' ? 'warning' : request.status === 'accepted' ? 'primary' : request.status === 'completed' ? 'success' : 'medium'">{{ request.status || 'Pending' }}</ion-badge></p>
+            <p>Worker: {{ request.worker?.name || 'Not Assigned' }}</p>
+          </ion-label>
+          <ion-select placeholder="Assign Worker" (ionChange)="assignWorkerToServiceRequest(request.id, $event.detail.value)" *ngIf="request.status !== 'completed'">
+            <ion-select-option *ngFor="let worker of workers" [value]="worker.id">{{ worker.name }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+      <ion-text color="medium" *ngIf="loadingServiceRequests">
+        <p>Loading service requests...</p>
+      </ion-text>
+      <ion-text color="medium" *ngIf="!loadingServiceRequests && serviceRequests.length === 0">
+        <p>No service requests found.</p>
+      </ion-text>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Orders Management Section -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Orders Management</ion-card-title>
+      <ion-button fill="clear" (click)="loadOrders()" [disabled]="loadingOrders">
+        <ion-icon name="refresh" *ngIf="!loadingOrders"></ion-icon>
+        <ion-icon name="refresh-circle" *ngIf="loadingOrders"></ion-icon>
+      </ion-button>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let order of orders">
+          <ion-label>
+            <h2>Order #{{ order.id }}</h2>
+            <p>User: {{ order.user?.name || 'N/A' }}</p>
+            <p>Pickup: {{ order.pickup_location || 'N/A' }}</p>
+            <p>Delivery: {{ order.delivery_location || 'N/A' }}</p>
+            <p>Status: <ion-badge [color]="order.status === 'pending' ? 'warning' : order.status === 'accepted' ? 'primary' : order.status === 'in_progress' ? 'secondary' : order.status === 'completed' ? 'success' : 'medium'">{{ order.status || 'Pending' }}</ion-badge></p>
+            <p>Worker: {{ order.worker?.name || 'Not Assigned' }}</p>
+            <p>Total: GHS{{ order.total_amount || '0.00' }}</p>
+          </ion-label>
+          <ion-select placeholder="Assign Worker" (ionChange)="assignWorkerToOrder(order.id, $event.detail.value)" *ngIf="order.status !== 'completed'">
+            <ion-select-option *ngFor="let worker of workers" [value]="worker.id">{{ worker.name }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+      <ion-text color="medium" *ngIf="loadingOrders">
+        <p>Loading orders...</p>
+      </ion-text>
+      <ion-text color="medium" *ngIf="!loadingOrders && orders.length === 0">
+        <p>No orders found.</p>
+      </ion-text>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Delivery Management Section -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Delivery Management</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let delivery of deliveries">
+          <ion-label>
+            <h2>Delivery #{{ delivery.id }}</h2>
+            <p>From: {{ delivery.pickup_address || 'N/A' }}</p>
+            <p>To: {{ delivery.destination_address || 'N/A' }}</p>
+            <p>Status: <ion-badge [color]="delivery.status === 'pending' ? 'warning' : delivery.status === 'in_transit' ? 'primary' : delivery.status === 'delivered' ? 'success' : 'medium'">{{ delivery.status || 'Pending' }}</ion-badge></p>
+            <p>Worker: {{ delivery.worker?.name || 'Not Assigned' }}</p>
+          </ion-label>
+          <ion-button fill="outline" (click)="trackDelivery(delivery.id)">
+            <ion-icon name="location" slot="start"></ion-icon>
+            Track Delivery
+          </ion-button>
+          <ion-button (click)="updateDeliveryStatus(delivery.id)">Update Status</ion-button>
+        </ion-item>
+      </ion-list>
+      <ion-text color="medium" *ngIf="deliveries.length === 0">
+        <p>No deliveries found.</p>
+      </ion-text>
+    </ion-card-content>
+</ion-card>
+
+  <!-- Shop Location Management Section -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Shop Location Management</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Address</ion-label>
+        <ion-input [(ngModel)]="shopLocation.address" placeholder="Enter shop address"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Latitude</ion-label>
+        <ion-input type="number" [(ngModel)]="shopLocation.latitude" placeholder="Enter latitude"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Longitude</ion-label>
+        <ion-input type="number" [(ngModel)]="shopLocation.longitude" placeholder="Enter longitude"></ion-input>
+      </ion-item>
+      <ion-button expand="full" (click)="saveShopLocation()" [disabled]="shopLocationLoading">
+        Save Shop Location
+      </ion-button>
+      <ion-text color="medium" *ngIf="shopLocationLoading">
+        <p>Saving shop location...</p>
+      </ion-text>
+      <!-- Google Maps Integration -->
+      <div id="map" style="height: 300px; margin-top: 10px; border: 1px solid #ccc; border-radius: 4px;">
+        <!-- Map will be loaded here -->
+      </div>
+      <ion-text color="medium" style="font-size: 12px; margin-top: 5px;">
+        <p>Click on the map to set the shop location coordinates</p>
+      </ion-text>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Invoice Management Section -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Invoice Management</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let invoice of invoices">
+          <ion-label>
+            <h2>Invoice #{{ invoice.id }}</h2>
+            <p>User: {{ invoice.user?.name || 'N/A' }}</p>
+            <p>Total Amount: GHS{{ invoice.total_amount || '0.00' }}</p>
+            <p>Status: {{ invoice.status || 'Pending' }}</p>
+          </ion-label>
+          <ion-button (click)="updateInvoice(invoice.id,invoice)">Update</ion-button>
+          <ion-button color="danger" (click)="deleteInvoice(invoice.id)">Delete</ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Admin Chat Support Section -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Chat Support</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-button expand="full" (click)="navigateToChatSupport()">Manage Chat Support</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Notification Management Section -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Promotional Notifications</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <app-notification-list></app-notification-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Analytics Section -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Analytics</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <h3>Service Requests Analytics</h3>
+      <div>
+        <canvas id="service-request-chart"></canvas>
+      </div>
+      <div>
+        <canvas id="delivery-chart"></canvas>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Conversation Management Section -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Conversation Management</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let conversation of conversations" (click)="openConversation(conversation)">
+          <ion-label>
+            <h2>Conversation with {{ conversation.participants.join(', ') }}</h2>
+            <p>{{ conversation.lastMessage.content }}</p>
+            <ion-badge color="primary">{{ conversation.unreadCount }} unread</ion-badge>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<!-- Add Service Modal -->
+<ion-modal #addServiceModal>
+  <ng-template>
+    <ion-content>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Add Service</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeAddServiceModal()">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-label position="floating">Service Name</ion-label>
+          <ion-input [(ngModel)]="newService.name"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Description</ion-label>
+          <ion-textarea [(ngModel)]="newService.description"></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Base Price</ion-label>
+          <ion-input type="number" [(ngModel)]="newService.base_price"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Distance Rate</ion-label>
+          <ion-input type="number" [(ngModel)]="newService.distance_rate"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Admin Latitude</ion-label>
+          <ion-input type="number" [(ngModel)]="newService.admin_latitude"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Admin Longitude</ion-label>
+          <ion-input type="number" [(ngModel)]="newService.admin_longitude"></ion-input>
+        </ion-item>
+        <ion-button expand="full" (click)="addService()" [disabled]="addingService">
+          <ion-spinner slot="start" *ngIf="addingService"></ion-spinner>
+          {{ addingService ? 'Adding Service...' : 'Add Service' }}
+        </ion-button>
+      </ion-content>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<!-- Add Worker Modal -->
+<ion-modal #addWorkerModal>
+  <ng-template>
+    <ion-content>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Add Worker</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeAddWorkerModal()">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="workerForm" (ngSubmit)="addWorker()">
+          <ion-item>
+            <ion-label position="floating">Full Name</ion-label>
+            <ion-input
+              formControlName="name"
+              placeholder="Enter worker's full name">
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Phone Number</ion-label>
+            <ion-input
+              formControlName="phone_number"
+              type="tel"
+              placeholder="Enter phone number">
+            </ion-input>
+          </ion-item>
+
+          <!-- Worker Type Selection -->
+          <ion-item>
+            <ion-label>Worker Type</ion-label>
+          </ion-item>
+          <ion-radio-group formControlName="worker_type" (ionChange)="onWorkerTypeChange($event)" class="worker-type-radio">
+            <ion-item>
+              <ion-label>Delivery Driver</ion-label>
+              <ion-radio slot="start" value="delivery_driver"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Service Worker</ion-label>
+              <ion-radio slot="start" value="service_worker"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+
+          <!-- Vehicle Type - Only show for delivery drivers -->
+          <ion-item *ngIf="workerForm.get('worker_type')?.value === 'delivery_driver'">
+            <ion-label position="floating">Vehicle Type</ion-label>
+            <ion-select formControlName="vehicle_type" placeholder="Select vehicle type">
+              <ion-select-option value="motorcycle">Motorcycle</ion-select-option>
+              <ion-select-option value="car">Car</ion-select-option>
+              <ion-select-option value="van">Van</ion-select-option>
+              <ion-select-option value="truck">Truck</ion-select-option>
+              <ion-select-option value="bicycle">Bicycle</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <!-- Vehicle Registration - Only show for delivery drivers -->
+          <ion-item *ngIf="workerForm.get('worker_type')?.value === 'delivery_driver'">
+            <ion-label position="floating">Vehicle Registration</ion-label>
+            <ion-input
+              formControlName="vehicle_registration"
+              placeholder="Enter vehicle registration number">
+            </ion-input>
+          </ion-item>
+
+          <!-- Service Type - Only show for service workers -->
+          <ion-item *ngIf="workerForm.get('worker_type')?.value === 'service_worker'">
+            <ion-label position="floating">Service Type</ion-label>
+            <ion-select formControlName="service_type" placeholder="Select service type">
+              <ion-select-option *ngFor="let service of services" [value]="service.name">{{ service.name }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-text color="medium" style="font-size: 12px; margin-bottom: 10px;">
+            <p>Note: Worker will receive SMS/Email to set their password after creation.</p>
+          </ion-text>
+
+          <ion-button
+            expand="full"
+            type="submit"
+            class="ion-margin-top"
+            [disabled]="addingWorker">
+            <ion-spinner slot="start" *ngIf="addingWorker"></ion-spinner>
+            {{ addingWorker ? 'Adding Worker...' : 'Add Worker' }}
+          </ion-button>
+        </form>
+
+        <div class="error-message" *ngIf="workerErrorMessage">
+          <ion-text color="danger">{{ workerErrorMessage }}</ion-text>
+        </div>
+      </ion-content>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<!-- Add Product Modal -->
+<ion-modal #addProductModal>
+  <ng-template>
+    <ion-content>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Add Product</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeAddProductModal()">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-label position="floating">Product Name</ion-label>
+          <ion-input [(ngModel)]="newProduct.name"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Description</ion-label>
+          <ion-textarea [(ngModel)]="newProduct.description"></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Base Price</ion-label>
+          <ion-input type="number" [(ngModel)]="newProduct.base_price"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Stock Quantity</ion-label>
+          <ion-input type="number" [(ngModel)]="newProduct.stock_quantity"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Image URL</ion-label>
+          <ion-input [(ngModel)]="newProduct.image_url"></ion-input>
+        </ion-item>
+        <ion-button expand="full" (click)="addProduct()" [disabled]="addingProduct">
+          <ion-spinner slot="start" *ngIf="addingProduct"></ion-spinner>
+          {{ addingProduct ? 'Adding Product...' : 'Add Product' }}
+        </ion-button>
+      </ion-content>
+    </ion-content>
+  </ng-template>
+</ion-modal>
