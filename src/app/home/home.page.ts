@@ -77,6 +77,42 @@ export class HomePage implements OnInit {
   toastMessage: string = '';
   itemCount: number = 0;
 
+  // Hero slider properties
+  slides = [
+    {
+      title: 'CLEANING SERVICES MADE SIMPLE',
+      subtitle: 'Choose from a variety of services',
+      bgColor: '#231F20', // dark blackish
+      bgImage: 'assets/images/delivery1.jpg' // example image path
+    },
+    {
+      title: 'FAST AND RELIABLE DELIVERY',
+      subtitle: 'Get your packages delivered on time',
+      bgColor: '#426C95', // blue
+      bgImage: 'assets/images/delivery2.jpg'
+    },
+    {
+      title: 'AFFORDABLE PRICES',
+      subtitle: 'Best rates for all your delivery needs',
+      bgColor: '#F15F4E', // red-orange
+      bgImage: 'assets/images/service1.jpg'
+    },
+    {
+      title: 'EASY TO USE APP',
+      subtitle: 'Simple and intuitive interface',
+      bgColor: '#F4D550', // yellow
+      bgImage: 'assets/images/service2.jpg'
+    },
+    {
+      title: 'CUSTOMER SATISFACTION',
+      subtitle: 'We prioritize your happiness',
+      bgColor: '#FAF7D8', // light cream
+      bgImage: 'assets/images/customer1.jpg'
+    }
+  ];
+  currentSlideIndex: number = 0;
+  slideInterval: any;
+
   constructor(
     private apiService: ApiService,
     private authService: AuthService,
@@ -102,6 +138,25 @@ export class HomePage implements OnInit {
     await this.notificationService.checkAndShowNotifications();
 
     this.triggerRefresh();
+
+    // Start hero slider interval
+    this.startSlideShow();
+  }
+
+  startSlideShow() {
+    this.slideInterval = setInterval(() => {
+      this.nextSlide();
+    }, 5000); // Change slide every 5 seconds
+  }
+
+  nextSlide() {
+    this.currentSlideIndex = (this.currentSlideIndex + 1) % this.slides.length;
+  }
+
+  ngOnDestroy() {
+    if (this.slideInterval) {
+      clearInterval(this.slideInterval);
+    }
   }
 
   triggerRefresh() {

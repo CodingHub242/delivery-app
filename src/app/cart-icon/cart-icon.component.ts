@@ -24,7 +24,7 @@ import { CommonModule } from '@angular/common';
   styles: [`
     .cart-button {
       position: relative;
-      --color: var(--ion-color-primary);
+      --color: #9f3a2e;
     }
     
     .cart-badge {

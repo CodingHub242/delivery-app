@@ -1,8 +1,12 @@
 ion-header {
   padding-top: env(safe-area-inset-top);
+  background: #f4f4f4;
+  --background:#f4f4f4;
 }
 ion-toolbar{
   margin-top: 42px;
+  background: #f4f4f4;
+  --background:#f4f4f4;
 }
 .user-dropdown {
   position: relative;

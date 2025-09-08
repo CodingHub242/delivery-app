@@ -57,6 +57,11 @@
           {{ deliveryStatus === 'delivered' ? 'Delivery Complete' : 'Track Delivery' }}
         </ion-button>
 
+        <ion-button *ngIf="isWorker && (deliveryStatus === 'in_transit' || deliveryStatus === 'out_for_delivery' || deliveryStatus === 'picked_up')"
+                    expand="block" color="success" (click)="markDeliveryCompleted()">
+          Mark Delivery Completed
+        </ion-button>
+
         <ion-button expand="block" color="tertiary" (click)="switchVehicleType()" 
                    fill="outline" style="margin-top: 8px;">
           Switch Vehicle Type

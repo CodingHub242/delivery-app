@@ -912,4 +912,35 @@ export class DeliveryTrackingPage implements OnInit, OnDestroy {
       console.error('❌ Error sending worker location to backend:', error);
     }
   }
+
+  async markDeliveryCompleted(): Promise<void> {
+    if (!this.deliveryDetails.deliveryId) {
+      console.error('❌ No delivery ID available to mark completed');
+      alert('Delivery ID not available. Please refresh the page.');
+      return;
+    }
+
+    try {
+      console.log(`📝 Marking delivery ${this.deliveryDetails.deliveryId} as completed`);
+      const response = await this.apiService.updateOrderStatus(this.deliveryDetails.deliveryId, 'delivered').toPromise();
+
+      if (response && response.success) {
+        console.log('✅ Delivery marked as completed successfully');
+        this.deliveryStatus = 'delivered';
+        alert('Delivery has been marked as completed!');
+
+        // Stop location tracking since delivery is complete
+        this.stopLocationTracking();
+
+        // Update UI to reflect completed status
+        // The status badge and button text will update automatically due to data binding
+      } else {
+        console.error('❌ Failed to mark delivery as completed:', response);
+        alert('Failed to mark delivery as completed. Please try again.');
+      }
+    } catch (error) {
+      console.error('❌ Error marking delivery as completed:', error);
+      alert('Error marking delivery as completed. Please check your connection and try again.');
+    }
+  }
 }

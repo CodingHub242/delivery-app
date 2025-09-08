@@ -12,10 +12,29 @@
   </ion-header>
 
   <div class="container">
-    <div class="welcome-section">
-      <h1>{{ 'welcome_to_servicehub' | translate }}</h1>
-      <p>{{ 'choose_services' | translate }}</p>
+    <div class="hero-slider">
+      <div 
+        class="slide" 
+        *ngFor="let slide of slides; let i = index" 
+        [class.active]="i === currentSlideIndex"
+        [style.background-color]="slide.bgColor"
+        [style.background-image]="'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(' + slide.bgImage + ')'"
+        style="background-size: cover; background-position: center;"
+      >
+        <div class="slide-content">
+          <h1>{{ slide.title }}</h1>
+          <p>{{ slide.subtitle }}</p>
+        </div>
+      </div>
+      <div class="slider-dots">
+        <span 
+          *ngFor="let slide of slides; let i = index" 
+          [class.active]="i === currentSlideIndex"
+          (click)="currentSlideIndex = i"
+        ></span>
+      </div>
     </div>
+
 
     <!-- Loading State -->
     <div *ngIf="loading" class="loading-section">
@@ -37,7 +56,7 @@
     </div>
 
     <!-- Services Grid -->
-    <div *ngIf="!loading && !error" class="services-grid">
+    <!-- <div *ngIf="!loading && !error" class="services-grid services-section">
       <ion-grid>
         <ion-row>
           <ion-col 
@@ -61,7 +80,7 @@
                 <div class="service-distance" *ngIf="service.distance_rate > 0">
                   <small>+ {{ service.distance_rate | localCurrency }}{{ 'per_mile_over' | translate }}</small>
                 </div>
-                <ion-button expand="block" color="primary">
+                <ion-button expand="block">
                   {{ 'select_service' | translate }}
                 </ion-button>
               </ion-card-content>
@@ -69,9 +88,60 @@
           </ion-col>
         </ion-row>
       </ion-grid>
+    </div> -->
+    <div *ngIf="!loading && !error && services.length > 0" class="services-section">
+      <div class="section-header">
+        <h2 class="section-title">{{ 'Our Services' | translate }}</h2>
+      </div>
+      
+      <div class="services-grid">
+        <div 
+          class="service-card-modern" 
+          *ngFor="let service of services;"
+          (click)="selectService(service)"
+        >
+          <div class="service-card-inner">
+            <div class="service-icon-container">
+              <div class="service-icon-bg">
+                <ion-icon [name]="getServiceIcon(service.name)" class="service-icon"></ion-icon>
+              </div>
+            </div>
+            
+            <div class="service-content">
+              <h3 class="service-title">{{ service.name }}</h3>
+              <p class="service-description">
+                {{ service.description || ('professional_service' | translate) }}
+              </p>
+              
+              <div class="service-pricing">
+                <div class="base-price">
+                  <span class="price-label">{{ 'from' | translate }}</span>
+                  <span class="price-value">{{ service.base_price | localCurrency }}</span>
+                </div>
+                <div class="distance-rate" *ngIf="service.distance_rate > 0">
+                  <span class="rate-text">
+                    + {{ service.distance_rate | localCurrency }} {{ 'per_mile_over' | translate }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="service-action">
+              <ion-button 
+                fill="solid" 
+                size="default"
+                class="select-button"
+              >
+                <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+                {{ 'select_service' | translate }}
+              </ion-button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="shop-products">
+    <!-- <div class="shop-products">
       <h2>{{ 'shop_products' | translate }}</h2>
       <ion-grid>
         <ion-row>
@@ -100,6 +170,74 @@
           </ion-col>
         </ion-row>
       </ion-grid>
+    </div> -->
+    <div *ngIf="shopProducts && shopProducts.length > 0" class="shop-section">
+      <div class="section-header">
+        <h2 class="section-title">{{ 'Our Hot Sales' | translate }}</h2>
+      </div>
+      
+      <div class="products-grid">
+        <div 
+          class="product-card-modern" 
+          *ngFor="let product of shopProducts;"
+        >
+          <div class="product-image-container">
+            <img 
+              *ngIf="product.image_url;" 
+              [src]="product.image_url" 
+              [alt]="product.name"
+              class="product-image"
+              loading="lazy"
+            />
+
+             <img 
+              *ngIf="!product.image_url;" 
+              [src]="'https://assets.bonappetit.com/photos/63e6c29840953eab0f1ffca3/16:9/w_2560%2Cc_limit/Best_cleaning_products.jpg'" 
+              [alt]="product.name"
+              class="product-image"
+              loading="lazy"
+            />
+            <ng-template *ngIf="!product.image_url" #placeholderImage>
+              <div class="product-placeholder">
+                <ion-icon name="image-outline" size="large"></ion-icon>
+              </div>
+            </ng-template>
+            
+            <div class="stock-badge" [class.out-of-stock]="!product.stock_quantity">
+              <span class="stocktime"> 
+                Stock : {{ product.stock_quantity || ('no_stock_available' | translate) }}
+              </span>
+              <ng-template #outOfStock>
+                {{ 'out_of_stock' | translate }}
+              </ng-template>
+            </div>
+          </div>
+          
+          <div class="product-content">
+            <h3 class="product-title">{{ product.name }}</h3>
+            <p class="product-description">
+              {{ product.description || ('no_description_available' | translate) }}
+            </p>
+            
+            <div class="product-footer">
+              <div class="product-price">
+                <span class="price-value">{{ product.base_price | localCurrency }}</span>
+              </div>
+              
+              <ion-button 
+                fill="solid" 
+                size="default"
+                class="add-to-cart-button"
+                (click)="addToCart(product)"
+                [disabled]="!product.stock_quantity"
+              >
+                <ion-icon name="bag-add-outline" slot="start"></ion-icon>
+                {{ 'add to cart' | translate }}
+              </ion-button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- No Services Available -->
@@ -125,7 +263,7 @@
   </ion-toast>
 
   <!-- Chat FAB Button -->
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="quick-actions">
     <ion-fab-button (click)="navigateToChat()">
       <ion-icon name="chatbubble"></ion-icon>
     </ion-fab-button>
