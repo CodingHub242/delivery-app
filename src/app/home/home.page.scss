@@ -9,6 +9,15 @@ ion-fab {
   bottom: 16px !important;
   right: 16px !important;
   z-index: 9999 !important;
+
+  ion-icon{
+    width: 30px;
+    height: 30px;
+    background: #0072ff;
+    padding: 10px;
+    border-radius: 50%;
+    color: white;
+  }
 }
 
 // Header Styling
