@@ -12,6 +12,7 @@ import {
   IonItem,
   IonLabel
 } from '@ionic/angular/standalone';
+import {StatusBar} from '@capacitor/status-bar';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
@@ -75,6 +76,11 @@ export class AppComponent {
       this.refreshChildComponent();
       this.checkLogg();
     });
+  }
+
+  ionViewWillEnter() {
+    StatusBar.setOverlaysWebView({ overlay: false });
+    StatusBar.setBackgroundColor({ color: '#9f3a2e' });
   }
 
   refreshChildComponent() {

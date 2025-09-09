@@ -1,10 +1,16 @@
 ion-header {
   padding-top: env(safe-area-inset-top);
+  padding-top: constant(safe-area-inset-top);
   background: #f4f4f4;
   --background:#f4f4f4;
 }
+ion-content{
+  padding-top: env(safe-area-inset-top);
+  padding-top: constant(safe-area-inset-top);
+}
 ion-toolbar{
-  margin-top: 42px;
+  padding-top: env(safe-area-inset-top);
+  padding-top: constant(safe-area-inset-top);
   background: #f4f4f4;
   --background:#f4f4f4;
 }
