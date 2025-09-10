@@ -1,6 +1,6 @@
 <ion-app>
   <!-- Header with User Dropdown -->
-  <ion-header *ngIf="shouldShowHeader() && currentUser">
+  <ion-header *ngIf="authService.currentUser">
     <ion-toolbar>
      <img src="../assets/img/logo.png" style="padding-left: 10px;" width="50px" alt="App Logo" class="app-logo" />
       <ion-buttons slot="end">
@@ -8,7 +8,7 @@
         <div class="user-dropdown">
           <ion-button (click)="presentPopover($event)" fill="clear">
             <ion-icon name="person-circle" slot="start"></ion-icon>
-            {{ currentUser?.name || currentUser?.email }}
+            {{ authService.currentUser?.name || authService.currentUser?.email }}
             <ion-icon name="chevron-down" slot="end"></ion-icon>
           </ion-button>
         </div>

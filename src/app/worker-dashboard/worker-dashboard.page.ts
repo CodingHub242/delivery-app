@@ -11,6 +11,7 @@ import { ApiService } from '../services/api.service';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AppComponent } from '../app.component';
 
 interface WorkerStats {
   totalOrders: number;
@@ -59,14 +60,20 @@ export class WorkerDashboardPage implements OnInit, OnDestroy {
 
   constructor(
     private apiService: ApiService,
-    private authService: AuthService,
-    private router: Router
+    public authService: AuthService,
+    private router: Router,
+    private appComponent: AppComponent
   ) {}
 
   async ngOnInit() {
     await this.loadWorkerDetails();
     await this.loadWorkerStats();
     await this.loadRecentOrders();
+    this.loadUser();
+  }
+
+  loadUser() {
+    this.authService.currentUser = this.authService.getUserFromStorage(); // Replace with your actual authentication service.
   }
 
   ngOnDestroy() {

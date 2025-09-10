@@ -54,7 +54,7 @@ export class AppComponent {
   cartItems: any[] = [];
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private router: Router,
     private apiService: ApiService,
     private refreshService: RefreshService,
@@ -65,16 +65,25 @@ export class AppComponent {
     this.cartItems = this.apiService.getCartItems();
   }
 
-   ngOnInit() {
+  ngOnInit() {
     this.loadCurrentUser();
     // Initialize cart when app starts
     if (this.authService.isLoggedIn() && this.authService.isCustomer()) {
       this.apiService.initializeCart();
     }
 
-     this.refreshService.refresh$.subscribe(() => {
+    this.refreshService.refresh$.subscribe(() => {
       this.refreshChildComponent();
       this.checkLogg();
+      // Reload current user when refresh is triggered (e.g., after login/logout)
+      this.loadCurrentUser();
+    });
+
+    // Subscribe to storage event to detect changes in localStorage (e.g., login/logout in other tabs)
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'user') {
+        this.loadCurrentUser();
+      }
     });
   }
 
@@ -95,7 +104,7 @@ export class AppComponent {
   }
 
   loadCurrentUser() {
-    this.currentUser = this.authService.getUserFromStorage();
+    this.authService.currentUser = this.authService.getUserFromStorage();
     if (this.currentUser) {
       this.apiService.initializeCart();
     }
@@ -116,11 +125,12 @@ export class AppComponent {
   //   }
   // }
 
-  // logout() {
-  //   this.showDropdown = false;
-  //   this.authService.completeLogout();
-  //   this.router.navigate(['/login']);
-  // }
+  logout() {
+    this.showDropdown = false;
+    this.authService.completeLogout();
+    this.currentUser = null;
+    this.router.navigate(['/login']);
+  }
 
   navigateToCart() {
     this.router.navigate(['/checkout']);

@@ -196,38 +196,257 @@ ion-text[color="danger"] {
   color: #e74c3c;
 }
 
+/* Enhanced Modal Styles */
+ion-modal {
+  --backdrop-opacity: 0.5;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  --height: 85vh;
+  --max-height: 85vh;
+  --max-width: 600px;
+  --width: 95vw;
+}
+
 ion-modal ion-content {
-  --background: #ffffff;
+  background: #ffffff !important;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  min-height: 100px;
+  display: block !important;
+  position: relative;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 1001;
+  transform: translateZ(0);
+  pointer-events: auto;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
 }
 
 ion-modal ion-header {
-  --background: #ffffff;
-  border-bottom: 1px solid #e0e0e0;
+  background: linear-gradient(135deg, #9b1768 0%, #e24aaf 100%);
+  border-bottom: none;
+  border-radius: 16px 16px 0 0;
+  padding: 0;
+  min-height: 60px;
 }
 
 ion-modal ion-toolbar {
-  --background: #ffffff;
+  background: transparent;
+  --background: transparent;
+  border-radius: 16px 16px 0 0;
+  padding: 0 16px;
 }
 
 ion-modal ion-title {
-  color: #222222;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 18px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+ion-modal ion-content .ion-padding {
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 0 0 16px 16px;
+}
+
+/* Modal Form Elements */
+ion-modal ion-item {
+  --background: #f8f9fa;
+  --border-color: #e9ecef;
+  --border-radius: 12px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+ion-modal ion-item:hover {
+  --background: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+ion-modal ion-label {
+  color: #495057;
   font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+ion-modal ion-input, ion-modal ion-textarea, ion-modal ion-select {
+  --background: transparent;
+  --border-color: transparent;
+  --border-radius: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  --color: #212529;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+ion-modal ion-input::placeholder, ion-modal ion-textarea::placeholder {
+  color: #adb5bd;
+}
+
+/* Modal Buttons */
+ion-modal ion-button {
+  --background: linear-gradient(135deg, #9b1768 0%, #e24aaf 100%);
+  --color: #ffffff;
+  --border-radius: 12px;
+  --padding-start: 24px;
+  --padding-end: 24px;
+  --padding-top: 14px;
+  --padding-bottom: 14px;
+  font-weight: 600;
+  font-size: 16px;
+  text-transform: none;
+  margin: 8px 0;
+  box-shadow: 0 4px 12px rgba(155, 23, 104, 0.3);
+  transition: all 0.3s ease;
+  border: none;
+}
+
+ion-modal ion-button:hover {
+  --background: linear-gradient(135deg, #7a134f 0%, #b91d8a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(155, 23, 104, 0.4);
+}
+
+ion-modal ion-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(155, 23, 104, 0.3);
+}
+
+ion-modal ion-button[fill="clear"] {
+  --background: transparent;
+  --color: #9b1768;
+  --border-color: #9b1768;
+  --border-width: 2px;
+  box-shadow: none;
+}
+
+ion-modal ion-button[fill="clear"]:hover {
+  --background: rgba(155, 23, 104, 0.1);
+  --color: #7a134f;
+}
+
+/* Modal Close Button */
+ion-modal ion-buttons ion-button {
+  --background: rgba(255, 255, 255, 0.2);
+  --color: #ffffff;
+  --border-radius: 50%;
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  margin: 0;
+  width: 36px;
+  height: 36px;
+  box-shadow: none;
+}
+
+ion-modal ion-buttons ion-button:hover {
+  --background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+/* Radio Group Styling for Worker Modal */
+.worker-type-radio {
+  margin: 16px 0;
 }
 
 .worker-type-radio ion-item {
-  --background: transparent;
-  --border-color: #e0e0e0;
-  margin-bottom: 8px;
+  --background: #f8f9fa;
+  --border-color: #dee2e6;
+  --border-radius: 12px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+.worker-type-radio ion-item:hover {
+  --background: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.worker-type-radio ion-radio {
+  --color-checked: #9b1768;
+}
+
+/* Error Message Styling */
 .error-message {
   margin-top: 16px;
-  padding: 12px;
-  background-color: #ffeaea;
-  border: 1px solid #f5c6cb;
-  border-radius: 8px;
+  padding: 16px;
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  border: 1px solid #e57373;
+  border-radius: 12px;
   text-align: center;
+  box-shadow: 0 2px 8px rgba(229, 115, 115, 0.2);
 }
+
+.error-message ion-text {
+  color: #c62828;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Loading Spinner */
+ion-modal ion-spinner {
+  color: #9b1768;
+}
+
+/* Responsive Modal Styles */
+@media (max-width: 768px) {
+  ion-modal {
+    --width: 98vw;
+    --max-width: 98vw;
+  }
+
+  ion-modal ion-content .ion-padding {
+    padding: 20px;
+  }
+
+  ion-modal ion-item {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+  }
+
+  ion-modal ion-button {
+    --padding-start: 20px;
+    --padding-end: 20px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  ion-modal ion-content .ion-padding {
+    padding: 16px;
+  }
+
+  ion-modal ion-title {
+    font-size: 16px;
+  }
+
+  ion-modal ion-button {
+    font-size: 14px;
+  }
+}
+
+
 
 #map {
   border: 1px solid #e0e0e0;
@@ -239,6 +458,139 @@ canvas {
   max-width: 100%;
   height: auto;
   margin: 16px 0;
+}
+
+/* Dashboard Layout */
+.dashboard-container {
+  display: flex;
+  min-height: calc(100vh - 56px); /* Account for header height */
+  background-color: #f5f7fa;
+}
+
+.sidebar {
+  width: 280px;
+  background-color: #ffffff;
+  border-right: 1px solid #e0e0e0;
+  padding: 20px 0;
+  transition: width 0.3s ease;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 56px; /* Header height */
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #f5f7fa;
+  min-height: calc(100vh - 56px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+/* Sidebar collapsed state */
+.dashboard-container.sidebar-collapsed .sidebar {
+  width: 70px;
+}
+
+.dashboard-container.sidebar-collapsed .sidebar ion-label {
+  display: none;
+}
+
+.dashboard-container.sidebar-collapsed .sidebar ion-item {
+  justify-content: center;
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
+/* Sidebar navigation styles */
+.sidebar ion-list {
+  padding: 0 16px;
+}
+
+.sidebar ion-item {
+  --background: transparent;
+  --border-radius: 8px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  margin-bottom: 4px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.sidebar ion-item:hover {
+  --background: #f8f9fa;
+}
+
+.sidebar ion-item.active {
+  --background: #e24aaf;
+  --color: #ffffff;
+}
+
+.sidebar ion-item.active ion-icon {
+  color: #ffffff;
+}
+
+.sidebar ion-item.active ion-label {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.sidebar ion-icon {
+  color: #666666;
+  transition: color 0.2s ease;
+}
+
+.sidebar ion-item:hover ion-icon {
+  color: #e24aaf;
+}
+
+.sidebar ion-item.active:hover ion-icon {
+  color: #ffffff;
+}
+
+/* Header adjustments for sidebar layout */
+ion-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 0;
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: none;
+  }
+
+  .dashboard-container.sidebar-collapsed .sidebar {
+    width: 100%;
+  }
+
+  .dashboard-container.sidebar-collapsed .sidebar ion-label {
+    display: block;
+  }
+
+  .dashboard-container.sidebar-collapsed .sidebar ion-item {
+    justify-content: flex-start;
+  }
+
+  .main-content {
+    padding: 16px;
+  }
 }
 
 /* Grid Layout for Item Lists */
@@ -512,6 +864,240 @@ canvas {
   }
 }
 
+/* Orders Section Specific Styles */
+.orders-section .item-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+  border: 2px solid #e3f2fd;
+  border-radius: 16px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
+.orders-section .item-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #2196f3 0%, #21cbf3 50%, #4caf50 100%);
+  border-radius: 16px 16px 0 0;
+}
 
+.orders-section .item-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(33, 150, 243, 0.15);
+  border-color: #2196f3;
+}
 
+.orders-section .item-content {
+  margin-bottom: 16px;
+}
+
+.orders-section .order-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e3f2fd;
+}
+
+.orders-section .order-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: #1565c0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.orders-section .order-id-icon {
+  color: #2196f3;
+  font-size: 20px;
+}
+
+.orders-section .order-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.orders-section .order-status.pending {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  color: #f57c00;
+  border: 1px solid #ffb74d;
+}
+
+.orders-section .order-status.accepted {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  color: #1976d2;
+  border: 1px solid #64b5f6;
+}
+
+.orders-section .order-status.in_progress {
+  background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+  color: #7b1fa2;
+  border: 1px solid #ba68c8;
+}
+
+.orders-section .order-status.completed {
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+  color: #2e7d32;
+  border: 1px solid #81c784;
+}
+
+.orders-section .order-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.orders-section .detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.orders-section .detail-icon {
+  color: #666;
+  font-size: 16px;
+  margin-top: 2px;
+  min-width: 16px;
+}
+
+.orders-section .detail-label {
+  font-size: 12px;
+  color: #666;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.orders-section .detail-value {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.orders-section .order-total {
+  background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+  border: 1px solid #ffe082;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin: 16px 0;
+  text-align: center;
+}
+
+.orders-section .total-label {
+  font-size: 12px;
+  color: #f57c00;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.orders-section .total-amount {
+  font-size: 20px;
+  color: #e65100;
+  font-weight: 700;
+  margin: 0;
+}
+
+.orders-section .order-worker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.orders-section .worker-label {
+  font-size: 12px;
+  color: #666;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.orders-section .worker-value {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.orders-section .item-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid #e3f2fd;
+}
+
+.orders-section .assign-worker {
+  flex: 1;
+  max-width: 200px;
+}
+
+.orders-section .assign-worker ion-select {
+  --background: #ffffff;
+  --border-color: #2196f3;
+  --border-radius: 8px;
+  --placeholder-color: #666;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Responsive adjustments for orders */
+@media (max-width: 768px) {
+  .orders-section .order-details {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .orders-section .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .orders-section .item-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .orders-section .assign-worker {
+    max-width: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .orders-section .item-card {
+    padding: 16px;
+  }
+
+  .orders-section .order-title {
+    font-size: 16px;
+  }
+
+  .orders-section .total-amount {
+    font-size: 18px;
+  }
+}

@@ -34,7 +34,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { addIcons } from 'ionicons';
-import { person, chatbubble, time, arrowBack, add, create, trash } from 'ionicons/icons';
+import { person, chatbubble, time, arrowBack, add, create, trash, document as documentIcon, location, car, cash, informationCircle, personCircle } from 'ionicons/icons';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartType,Chart,Title,registerables } from 'chart.js';
 import { NotificationListComponent } from './notification-list/notification-list.component';
@@ -79,6 +79,9 @@ import { NotificationListComponent } from './notification-list/notification-list
   ]
 })
 export class AdminDashboardPage implements OnInit, OnDestroy, AfterViewInit {
+  sidebarCollapsed: boolean = false;
+  activeMenu: string = 'dashboard';
+
   conversations: any[] = [];
   services: any[] = [];
   workers: any[] = [];
@@ -195,11 +198,11 @@ export class AdminDashboardPage implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     private apiService: ApiService,
-    private authService: AuthService,
+    public authService: AuthService,
     private router: Router,
     private formBuilder: FormBuilder
   ) {
-    addIcons({ person, chatbubble, time, arrowBack, add, create, trash });
+    addIcons({ person, chatbubble, time, arrowBack, add, create, trash, document: documentIcon, location, car, cash, informationCircle, personCircle });
     Chart.register(...registerables);
     this.initializeWorkerForm();
   }
@@ -214,7 +217,14 @@ export class AdminDashboardPage implements OnInit, OnDestroy, AfterViewInit {
       service_type: [''],
       role: ['worker']
     });
+
+     window.addEventListener('storage', (event) => {
+      if (event.key === 'user') {
+        this.loadCurrentUser();
+      }
+    });
   }
+
 
   // Modal methods
   openAddServiceModal() {
@@ -292,7 +302,7 @@ export class AdminDashboardPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    this.loadCurrentUser();
+   
     this.loadConversations();
     this.loadServices();
     this.loadWorkers();
@@ -305,6 +315,10 @@ export class AdminDashboardPage implements OnInit, OnDestroy, AfterViewInit {
     this.loadShopLocation();
   }
 
+  ionViewWillEnter() {
+     this.loadCurrentUser();
+  }
+
   ngOnDestroy() {
     // Clean up any subscriptions if needed
   }
@@ -312,14 +326,15 @@ export class AdminDashboardPage implements OnInit, OnDestroy, AfterViewInit {
 
 
   loadCurrentUser() {
-    this.authService.getUser().subscribe({
-      next: (user) => {
-        this.currentUser = user;
-      },
-      error: (error) => {
-        console.error('Error loading current user:', error);
-      }
-    });
+     this.authService.currentUser = this.authService.getUserFromStorage();
+    // .subscribe({
+    //   next: (user) => {
+    //     this.currentUser = user;
+    //   },
+    //   error: (error) => {
+    //     console.error('Error loading current user:', error);
+    //   }
+    // });
   }
 
   loadConversations() {
@@ -677,6 +692,43 @@ export class AdminDashboardPage implements OnInit, OnDestroy, AfterViewInit {
     this.activeTab = tab;
   }
 
+  toggleSidebar() {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
+  }
+
+  setActiveMenu(menu: string) {
+    this.activeMenu = menu;
+
+    // Smooth scroll to the corresponding section
+    const sectionId = this.getSectionId(menu);
+    if (sectionId) {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }
+  }
+
+  private getSectionId(menu: string): string | null {
+    const sectionMap: { [key: string]: string } = {
+      'dashboard': 'hero-section',
+      'analytics': 'analytics-section',
+      'advertisement': 'advertisement',
+      'management': 'service-management', // Default to service management
+      'helpdesk': 'helpdesk',
+      'monitoring': 'monitoring',
+      'crypto': 'crypto',
+      'project-management': 'project-management',
+      'product': 'product-management',
+      'statistics': 'statistics'
+    };
+
+    return sectionMap[menu] || null;
+  }
+
   toggleWorkerAvailability(workerId: number) {
     const worker = this.workers.find(w => w.id === workerId);
     if (worker) {
@@ -945,19 +997,19 @@ export class AdminDashboardPage implements OnInit, OnDestroy, AfterViewInit {
         this.loadMap();
       };
 
-      script.onerror = (error) => {
+      script.onerror = (error: any) => {
         console.error('Failed to load Google Maps API:', error);
         this.showMapError('Failed to load Google Maps. Please check your API key and ensure Places API is enabled.');
       };
 
-      document.head.appendChild(script);
+      ((window as any).document as Document).head.appendChild(script);
     } else {
       this.loadMap();
     }
   }
 
   showMapError(message: string) {
-    const mapElement = document.getElementById('map');
+    const mapElement = ((window as any).document as Document).getElementById('map');
     if (mapElement) {
       mapElement.innerHTML = `
         <div style="padding: 20px; text-align: center; color: #666; background: #f8f9fa; border-radius: 8px;">
@@ -990,7 +1042,7 @@ export class AdminDashboardPage implements OnInit, OnDestroy, AfterViewInit {
         fullscreenControl: true
       };
 
-      const map = new (window as any).google.maps.Map(document.getElementById('map'), mapOptions);
+      const map = new (window as any).google.maps.Map(((window as any).document as Document).getElementById('map'), mapOptions);
 
       // Initialize markers array to track all markers
       let markers: any[] = [];
@@ -1003,7 +1055,7 @@ export class AdminDashboardPage implements OnInit, OnDestroy, AfterViewInit {
       }
 
       // Create search box for places
-      const input = document.createElement('input');
+      const input = ((window as any).document as Document).createElement('input');
       input.type = 'text';
       input.placeholder = 'Search for a location...';
       input.style.cssText = `
@@ -1171,9 +1223,9 @@ export class AdminDashboardPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   updateFormInputs() {
-    const addressInput = document.querySelector('ion-input[placeholder="Enter shop address"]') as any;
-    const latInput = document.querySelector('ion-input[placeholder="Enter latitude"]') as any;
-    const lngInput = document.querySelector('ion-input[placeholder="Enter longitude"]') as any;
+    const addressInput = ((window as any).document as Document).querySelector('ion-input[placeholder="Enter shop address"]') as any;
+    const latInput = ((window as any).document as Document).querySelector('ion-input[placeholder="Enter latitude"]') as any;
+    const lngInput = ((window as any).document as Document).querySelector('ion-input[placeholder="Enter longitude"]') as any;
 
     if (addressInput) addressInput.value = this.shopLocation.address;
     if (latInput) latInput.value = this.shopLocation.latitude.toString();

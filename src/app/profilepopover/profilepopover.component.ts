@@ -47,6 +47,9 @@ export class ProfilepopoverComponent  implements OnInit {
 
   logout() {
     this.authService.completeLogout();
+    this.authService.currentUser = null;
+     this.authService.removeToken();
+    this.authService.removeUser();
     this.router.navigate(['/login']);
     this.poper.dismiss();
   }

@@ -8,7 +8,7 @@ import { LoginRequest, RegisterRequest, AuthResponse, User } from '../models/use
 })
 export class AuthService {
   private apiUrl = 'https://delivery.codepps.online/api/auth'; // Update with your backend URL
-
+  currentUser: any = null;
   constructor(
     private http: HttpClient
   ) {}
