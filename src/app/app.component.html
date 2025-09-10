@@ -2,7 +2,7 @@
   <!-- Header with User Dropdown -->
   <ion-header *ngIf="shouldShowHeader() && currentUser">
     <ion-toolbar>
-     
+     <img src="../assets/img/logo.png" style="padding-left: 10px;" width="50px" alt="App Logo" class="app-logo" />
       <ion-buttons slot="end">
         <!-- User Dropdown -->
         <div class="user-dropdown">
@@ -13,6 +13,19 @@
           </ion-button>
         </div>
         <app-cart-icon></app-cart-icon>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-header *ngIf="!currentUser">
+    <ion-toolbar>
+     <img src="../assets/img/logo.png" style="padding-left: 10px;" width="50px" alt="App Logo" class="app-logo" />
+      <ion-buttons slot="end">
+      
+        <div class="user-dropdown">
+          <ion-button>
+            Login
+          </ion-button>
+        </div>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>

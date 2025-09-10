@@ -1,12 +1,12 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
-import { 
-  IonHeader, 
-  IonToolbar, 
-  IonTitle, 
-  IonContent, 
-  IonCard, 
-  IonCardHeader, 
-  IonCardTitle, 
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
   IonCardContent,
   IonButton,
   IonGrid,
@@ -34,7 +34,24 @@ import { CurrencyPipe } from '../pipes/currency.pipe';
 import { CartIconComponent } from '../cart-icon/cart-icon.component';
 import { RefreshService } from '../services/refresh.service';
 import { NotificationService } from '../services/notification.service';
+import {StatusBar} from '@capacitor/status-bar';
+// import 'assets/owl.carousel.css';
+// import 'owl.carousel';
+import {register} from 'swiper/element/bundle';
+import $ from 'jquery';
 
+// Add this declaration to extend JQuery with owlCarousel
+// declare global {
+//   interface JQuery {
+//     owlCarousel(options?: any): JQuery;
+//   }
+// }
+
+// Swiper imports
+import Swiper from 'swiper';
+import { SwiperOptions } from 'swiper/types';
+
+register();
 
 @Component({
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
@@ -65,7 +82,9 @@ import { NotificationService } from '../services/notification.service';
   ],
   providers: [ApiService,CartIconComponent]
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, AfterViewInit {
+  @ViewChild('swiperContainer', { static: false }) swiperContainer!: ElementRef;
+  swiper!: Swiper;
   services: Service[] = [];
   shopProducts: Product[] = []; // New array for shop products
   loading: boolean = true;
@@ -77,41 +96,93 @@ export class HomePage implements OnInit {
   toastMessage: string = '';
   itemCount: number = 0;
 
+  infoCards = [
+    {
+      title: 'ACCESSIBLE CUSTOMER SERVICE',
+      description: '',
+      image: 'https://assets.bonappetit.com/photos/63e6c29840953eab0f1ffca3/16:9/w_2560%2Cc_limit/Best_cleaning_products.jpg'
+    },
+    {
+      title: '1 YEAR WARRANTY, ONLY REPLACE NO REPAIR',
+      description: '',
+      image: 'https://assets.bonappetit.com/photos/63e6c29840953eab0f1ffca3/16:9/w_2560%2Cc_limit/Best_cleaning_products.jpg'
+    },
+    {
+      title: 'FREE SHIPPING OVER ₵120 DOOR TO DOOR DELIVERY',
+      description: '',
+      image: 'https://assets.bonappetit.com/photos/63e6c29840953eab0f1ffca3/16:9/w_2560%2Cc_limit/Best_cleaning_products.jpg'
+    },
+    {
+      title: 'ORAIMO AUTHENTICITY & BEST PRICE GUARANTEED',
+      description: '',
+      image: 'https://assets.bonappetit.com/photos/63e6c29840953eab0f1ffca3/16:9/w_2560%2Cc_limit/Best_cleaning_products.jpg'
+    },
+    {
+      title: 'ESHOP EXCLUSIVE COMMUNITY EVENTS, SCAN TO JOIN O-CLUB GH NOW!',
+      description: '',
+      image: 'https://assets.bonappetit.com/photos/63e6c29840953eab0f1ffca3/16:9/w_2560%2Cc_limit/Best_cleaning_products.jpg'
+    },
+    {
+      title: 'BUY TO GET ORAIMO EXPLORER POINTS, EXTRA POINTS FOR MEMBERS',
+      description: '',
+      image: 'https://via.placeholder.com/100?text=Explorer+Points'
+    },
+    {
+      title: 'NATIONWIDE OFFLINE AFTER-SALES OUTLETS',
+      description: '',
+      image: 'https://via.placeholder.com/100?text=Carlcare+Service'
+    }
+  ];
+
   // Hero slider properties
   slides = [
     {
-      title: 'CLEANING SERVICES MADE SIMPLE',
+      title: 'CLEANING MADE SIMPLE',
       subtitle: 'Choose from a variety of services',
       bgColor: '#231F20', // dark blackish
-      bgImage: 'assets/images/delivery1.jpg' // example image path
+      bgImage: '../assets/img/s1.jpg' // corrected path
     },
     {
-      title: 'FAST AND RELIABLE DELIVERY',
+      title: 'RELIABLE DELIVERY',
       subtitle: 'Get your packages delivered on time',
       bgColor: '#426C95', // blue
-      bgImage: 'assets/images/delivery2.jpg'
+      bgImage: '../assets/img/s2.jpg'
     },
     {
       title: 'AFFORDABLE PRICES',
       subtitle: 'Best rates for all your delivery needs',
       bgColor: '#F15F4E', // red-orange
-      bgImage: 'assets/images/service1.jpg'
+      bgImage: '../assets/img/s3.jpg'
     },
-    {
-      title: 'EASY TO USE APP',
-      subtitle: 'Simple and intuitive interface',
-      bgColor: '#F4D550', // yellow
-      bgImage: 'assets/images/service2.jpg'
-    },
+    // {
+    //   title: 'EASY TO USE APP',
+    //   subtitle: 'Simple and intuitive interface',
+    //   bgColor: '#F4D550', // yellow
+    //   bgImage: '../assets/img/s4.jpg'
+    // },
     {
       title: 'CUSTOMER SATISFACTION',
       subtitle: 'We prioritize your happiness',
       bgColor: '#FAF7D8', // light cream
-      bgImage: 'assets/images/customer1.jpg'
+      bgImage: '../assets/img/s5.jpg'
     }
   ];
-  currentSlideIndex: number = 0;
-  slideInterval: any;
+
+  swiperConfig: SwiperOptions = {
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false,
+    },
+    loop: true,
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+  };
 
   constructor(
     private apiService: ApiService,
@@ -126,36 +197,61 @@ export class HomePage implements OnInit {
   ) {
     addIcons({ car, brush, construct, cart, person, chatbubble, logOut, basket });
 
-  
+    StatusBar.setOverlaysWebView({ overlay: false });
+    StatusBar.setBackgroundColor({ color: '#9f3a2e' });
+
+    // $(document).ready(function(){
+    //   $(".owl-carousel").owlCarousel();
+    // });
   }
 
   async ngOnInit() {
+    this.preloadSliderImages(); // Preload slider images to prevent loading delays
     this.loadServices();
     this.loadShopProducts(); // Load shop products
     this.currentUSer = this.authService.getUserFromStorage();
-    
+
     // Check for promotional notifications
     await this.notificationService.checkAndShowNotifications();
 
     this.triggerRefresh();
-
-    // Start hero slider interval
-    this.startSlideShow();
   }
 
-  startSlideShow() {
-    this.slideInterval = setInterval(() => {
-      this.nextSlide();
-    }, 5000); // Change slide every 5 seconds
+  preloadSliderImages() {
+    this.slides.forEach(slide => {
+      const img = new Image();
+      img.src = slide.bgImage;
+    });
+
+    
   }
 
-  nextSlide() {
-    this.currentSlideIndex = (this.currentSlideIndex + 1) % this.slides.length;
-  }
+  ngAfterViewInit() {
+    // Initialize Swiper if not automatically initialized
+    const swiperEl = this.swiperContainer?.nativeElement;
+    if (swiperEl && swiperEl.swiper) {
+      // Swiper already initialized
+    } else if (swiperEl) {
+      Object.assign(swiperEl, this.swiperConfig);
+      swiperEl.initialize();
+    }
 
-  ngOnDestroy() {
-    if (this.slideInterval) {
-      clearInterval(this.slideInterval);
+     // Assuming you have an array of carousel items
+    const carouselItems = document.querySelectorAll('.carousel-item');
+    const indicators = document.querySelectorAll('.carousel-indicators button');
+
+    console.log('Carousel Items:', indicators);
+
+    // Remove 'active' class from all items and indicators
+    carouselItems.forEach(item => item.classList.remove('active'));
+    indicators.forEach(indicator => indicator.classList.remove('active'));
+
+    // Add 'active' class to the first item and its corresponding indicator
+    if (carouselItems.length > 0) {
+      carouselItems[0].classList.add('active');
+      if (indicators.length > 0) {
+        indicators[0].classList.add('active');
+      }
     }
   }
 
@@ -178,9 +274,44 @@ export class HomePage implements OnInit {
                 this.deliveryId = deliveries[0].id; // Set to the first delivery ID
                 this.receiverId = deliveries[0].receiver_id; // Set to the corresponding receiver ID
               }
+              // Assuming you have an array of carousel items
+              const carouselItems = document.querySelectorAll('.carousel-item');
+              const indicators = document.querySelectorAll('.carousel-indicators button');
+
+              console.log('Carousel Items:', indicators);
+
+              // Remove 'active' class from all items and indicators
+              carouselItems.forEach(item => item.classList.remove('active'));
+              indicators.forEach(indicator => indicator.classList.remove('active'));
+
+              // Add 'active' class to the first item and its corresponding indicator
+              if (carouselItems.length > 0) {
+                carouselItems[0].classList.add('active');
+                if (indicators.length > 0) {
+                  indicators[0].classList.add('active');
+                }
+              }
             },
             error: (error) => {
               console.error('Error loading user deliveries:', error);
+
+              // Assuming you have an array of carousel items
+              const carouselItems = document.querySelectorAll('.carousel-item');
+              const indicators = document.querySelectorAll('.carousel-indicators button');
+
+              console.log('Carousel Items:', indicators);
+
+              // Remove 'active' class from all items and indicators
+              carouselItems.forEach(item => item.classList.remove('active'));
+              indicators.forEach(indicator => indicator.classList.remove('active'));
+
+              // Add 'active' class to the first item and its corresponding indicator
+              if (carouselItems.length > 0) {
+                carouselItems[0].classList.add('active');
+                if (indicators.length > 0) {
+                  indicators[0].classList.add('active');
+                }
+              }
             }
           });
         }
@@ -191,6 +322,11 @@ export class HomePage implements OnInit {
         console.error('Error loading services:', error);
       }
     });
+   // this.ngOnInit();
+  }
+
+  ReloadServices() {
+    this.ngOnInit();
   }
 
   getServiceIcon(serviceName: string): string {

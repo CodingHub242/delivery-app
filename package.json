@@ -38,8 +38,10 @@
     "jquery": "^3.7.1",
     "leaflet": "^1.9.4",
     "ng2-charts": "^8.0.0",
+    "owl.carousel": "^2.3.4",
     "pusher-js": "^8.4.0",
     "rxjs": "~7.8.0",
+    "swiper": "^11.2.10",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },

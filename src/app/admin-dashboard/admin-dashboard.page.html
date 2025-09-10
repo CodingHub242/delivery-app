@@ -8,25 +8,75 @@
 </ion-header>
 
 <ion-content>
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title">Benlee Cleaning & Delivery</h1>
+        <p class="hero-subtitle">Manage your delivery services, workers, and operations with ease</p>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <ion-icon name="business" class="stat-icon"></ion-icon>
+          <div class="stat-info">
+            <span class="stat-number">{{ services.length }}</span>
+            <span class="stat-label">Services</span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <ion-icon name="people" class="stat-icon"></ion-icon>
+          <div class="stat-info">
+            <span class="stat-number">{{ workers.length }}</span>
+            <span class="stat-label">Workers</span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <ion-icon name="cart" class="stat-icon"></ion-icon>
+          <div class="stat-info">
+            <span class="stat-number">{{ orders.length }}</span>
+            <span class="stat-label">Orders</span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <ion-icon name="car" class="stat-icon"></ion-icon>
+          <div class="stat-info">
+            <span class="stat-number">{{ deliveries.length }}</span>
+            <span class="stat-label">Deliveries</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-decoration">
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Service Management Card -->
   <ion-card>
     <ion-card-header>
       <ion-card-title>Service Management</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-button expand="full" (click)="openAddServiceModal()">Add Service</ion-button>
-      <ion-list>
-        <ion-item *ngFor="let service of services">
-          <ion-label>
-            <h2>{{ service.name }}</h2>
+      <ion-button expand="full" (click)="openAddServiceModal()">+ Add Service</ion-button>
+      <div class="item-grid">
+        <div class="item-card" *ngFor="let service of servicesExpanded ? services : services.slice(0, 3)">
+          <div class="item-content">
+            <h3>{{ service.name }}</h3>
             <p>{{ service.description }}</p>
             <p>Base Price: GHS{{ service.base_price }}</p>
             <p>Distance Rate: GHS{{ service.distance_rate }}/km</p>
-          </ion-label>
-          <ion-button (click)="updateService(service.id)">Update</ion-button>
-          <ion-button color="danger" (click)="deleteService(service.id)">Delete</ion-button>
-        </ion-item>
-      </ion-list>
+          </div>
+          <div class="item-actions">
+            <ion-button size="small" (click)="updateService(service.id)">Update</ion-button>
+            <ion-button size="small" color="danger" (click)="deleteService(service.id)">Delete</ion-button>
+          </div>
+        </div>
+      </div>
+      <ion-button fill="outline" expand="full" *ngIf="services.length > 3" (click)="seeMoreServices()">{{ servicesExpanded ? 'Show Less Services' : 'See More Services' }}</ion-button>
     </ion-card-content>
   </ion-card>
 
@@ -36,20 +86,23 @@
       <ion-card-title>Worker Management</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-button expand="full" (click)="openAddWorkerModal()">Add Worker</ion-button>
-      <ion-list>
-        <ion-item *ngFor="let worker of workers">
-          <ion-label>
-            <h2>{{ worker.name }}</h2>
+      <ion-button expand="full" (click)="openAddWorkerModal()">+ Add Worker</ion-button>
+      <div class="item-grid">
+        <div class="item-card" *ngFor="let worker of workersExpanded ? workers : workers.slice(0, 3)">
+          <div class="item-content">
+            <h3>{{ worker.name }}</h3>
             <p>Phone: {{ worker.phone_number }}</p>
             <p *ngIf="worker.worker_type === 'delivery_driver'">Vehicle: {{ worker.vehicle_type }} ({{ worker.vehicle_plate }})</p>
             <p *ngIf="worker.worker_type === 'service_worker'">Service: {{ worker.service_type }}</p>
             <p>Available: {{ worker.is_available ? 'Yes' : 'No' }}</p>
-          </ion-label>
-          <ion-button (click)="updateWorker(worker.id)">Update</ion-button>
-          <ion-button color="danger" (click)="deleteWorker(worker.id)">Delete</ion-button>
-        </ion-item>
-      </ion-list>
+          </div>
+          <div class="item-actions">
+            <ion-button size="small" (click)="updateWorker(worker.id)">Update</ion-button>
+            <ion-button size="small" color="danger" (click)="deleteWorker(worker.id)">Delete</ion-button>
+          </div>
+        </div>
+      </div>
+      <ion-button fill="outline" expand="full" *ngIf="workers.length > 4" (click)="seeMoreWorkers()">{{ workersExpanded ? 'Show Less Workers' : 'See More Workers' }}</ion-button>
     </ion-card-content>
   </ion-card>
 
@@ -59,19 +112,22 @@
       <ion-card-title>Product Management</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-button expand="full" (click)="openAddProductModal()">Add Product</ion-button>
-      <ion-list>
-        <ion-item *ngFor="let product of products">
-          <ion-label>
-            <h2>{{ product.name }}</h2>
+      <ion-button expand="full" (click)="openAddProductModal()">+ Add Product</ion-button>
+      <div class="item-grid">
+        <div class="item-card" *ngFor="let product of productsExpanded ? products : products.slice(0, 3)">
+          <div class="item-content">
+            <h3>{{ product.name }}</h3>
             <p>{{ product.description }}</p>
             <p>Price: GHS{{ product.base_price }}</p>
             <p>Stock: {{ product.stock_quantity }}</p>
-          </ion-label>
-          <ion-button (click)="updateProduct(product.id)">Update</ion-button>
-          <ion-button color="danger" (click)="deleteProduct(product.id)">Delete</ion-button>
-        </ion-item>
-      </ion-list>
+          </div>
+          <div class="item-actions">
+            <ion-button size="small" (click)="updateProduct(product.id)">Update</ion-button>
+            <ion-button size="small" color="danger" (click)="deleteProduct(product.id)">Delete</ion-button>
+          </div>
+        </div>
+      </div>
+      <ion-button fill="outline" expand="full" *ngIf="products.length > 4" (click)="seeMoreProducts()">{{ productsExpanded ? 'Show Less Products' : 'See More Products' }}</ion-button>
     </ion-card-content>
   </ion-card>
 
@@ -85,20 +141,23 @@
       </ion-button>
     </ion-card-header>
     <ion-card-content>
-      <ion-list>
-        <ion-item *ngFor="let request of serviceRequests">
-          <ion-label>
-            <h2>Service Request #{{ request.id }}</h2>
+      <div class="item-grid">
+        <div class="item-card" *ngFor="let request of serviceRequestsExpanded ? serviceRequests : serviceRequests.slice(0, 4)">
+          <div class="item-content">
+            <h3>Service Request #{{ request.id }}</h3>
             <p>Service: {{ request.service?.name || 'N/A' }}</p>
             <p>User: {{ request.user?.name || 'N/A' }}</p>
             <p>Status: <ion-badge [color]="request.status === 'pending' ? 'warning' : request.status === 'accepted' ? 'primary' : request.status === 'completed' ? 'success' : 'medium'">{{ request.status || 'Pending' }}</ion-badge></p>
             <p>Worker: {{ request.worker?.name || 'Not Assigned' }}</p>
-          </ion-label>
-          <ion-select placeholder="Assign Worker" (ionChange)="assignWorkerToServiceRequest(request.id, $event.detail.value)" *ngIf="request.status !== 'completed'">
-            <ion-select-option *ngFor="let worker of workers" [value]="worker.id">{{ worker.name }}</ion-select-option>
-          </ion-select>
-        </ion-item>
-      </ion-list>
+          </div>
+          <div class="item-actions">
+            <ion-select placeholder="Assign Worker" (ionChange)="assignWorkerToServiceRequest(request.id, $event.detail.value)" *ngIf="request.status !== 'completed'">
+              <ion-select-option *ngFor="let worker of workers" [value]="worker.id">{{ worker.name }}</ion-select-option>
+            </ion-select>
+          </div>
+        </div>
+      </div>
+      <ion-button fill="outline" expand="full" *ngIf="serviceRequests.length > 4" (click)="seeMoreServiceRequests()">{{ serviceRequestsExpanded ? 'Show Less Service Requests' : 'See More Service Requests' }}</ion-button>
       <ion-text color="medium" *ngIf="loadingServiceRequests">
         <p>Loading service requests...</p>
       </ion-text>
@@ -118,22 +177,25 @@
       </ion-button>
     </ion-card-header>
     <ion-card-content>
-      <ion-list>
-        <ion-item *ngFor="let order of orders">
-          <ion-label>
-            <h2>Order #{{ order.id }}</h2>
+      <div class="item-grid">
+        <div class="item-card" *ngFor="let order of ordersExpanded ? orders : orders.slice(0, 4)">
+          <div class="item-content">
+            <h3>Order #{{ order.id }}</h3>
             <p>User: {{ order.user?.name || 'N/A' }}</p>
             <p>Pickup: {{ order.pickup_location || 'N/A' }}</p>
             <p>Delivery: {{ order.delivery_location || 'N/A' }}</p>
             <p>Status: <ion-badge [color]="order.status === 'pending' ? 'warning' : order.status === 'accepted' ? 'primary' : order.status === 'in_progress' ? 'secondary' : order.status === 'completed' ? 'success' : 'medium'">{{ order.status || 'Pending' }}</ion-badge></p>
             <p>Worker: {{ order.worker?.name || 'Not Assigned' }}</p>
             <p>Total: GHS{{ order.total_amount || '0.00' }}</p>
-          </ion-label>
-          <ion-select placeholder="Assign Worker" (ionChange)="assignWorkerToOrder(order.id, $event.detail.value)" *ngIf="order.status !== 'completed'">
-            <ion-select-option *ngFor="let worker of workers" [value]="worker.id">{{ worker.name }}</ion-select-option>
-          </ion-select>
-        </ion-item>
-      </ion-list>
+          </div>
+          <div class="item-actions">
+            <ion-select placeholder="Assign Worker" (ionChange)="assignWorkerToOrder(order.id, $event.detail.value)" *ngIf="order.status !== 'completed'">
+              <ion-select-option *ngFor="let worker of workers" [value]="worker.id">{{ worker.name }}</ion-select-option>
+            </ion-select>
+          </div>
+        </div>
+      </div>
+      <ion-button fill="outline" expand="full" *ngIf="orders.length > 4" (click)="seeMoreOrders()">{{ ordersExpanded ? 'Show Less Orders' : 'See More Orders' }}</ion-button>
       <ion-text color="medium" *ngIf="loadingOrders">
         <p>Loading orders...</p>
       </ion-text>
@@ -149,27 +211,30 @@
       <ion-card-title>Delivery Management</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-list>
-        <ion-item *ngFor="let delivery of deliveries">
-          <ion-label>
-            <h2>Delivery #{{ delivery.id }}</h2>
+      <div class="item-grid">
+        <div class="item-card" *ngFor="let delivery of deliveriesExpanded ? deliveries : deliveries.slice(0, 4)">
+          <div class="item-content">
+            <h3>Delivery #{{ delivery.id }}</h3>
             <p>From: {{ delivery.pickup_address || 'N/A' }}</p>
             <p>To: {{ delivery.destination_address || 'N/A' }}</p>
             <p>Status: <ion-badge [color]="delivery.status === 'pending' ? 'warning' : delivery.status === 'in_transit' ? 'primary' : delivery.status === 'delivered' ? 'success' : 'medium'">{{ delivery.status || 'Pending' }}</ion-badge></p>
             <p>Worker: {{ delivery.worker?.name || 'Not Assigned' }}</p>
-          </ion-label>
-          <ion-button fill="outline" (click)="trackDelivery(delivery.id)">
-            <ion-icon name="location" slot="start"></ion-icon>
-            Track Delivery
-          </ion-button>
-          <ion-button (click)="updateDeliveryStatus(delivery.id)">Update Status</ion-button>
-        </ion-item>
-      </ion-list>
+          </div>
+          <div class="item-actions">
+            <ion-button size="small" fill="outline" (click)="trackDelivery(delivery.id)">
+              <ion-icon name="location" slot="start"></ion-icon>
+              Track
+            </ion-button>
+            <ion-button size="small" (click)="updateDeliveryStatus(delivery.id)">Update</ion-button>
+          </div>
+        </div>
+      </div>
+      <ion-button fill="outline" expand="full" *ngIf="deliveries.length > 4" (click)="seeMoreDeliveries()">{{ deliveriesExpanded ? 'Show Less Deliveries' : 'See More Deliveries' }}</ion-button>
       <ion-text color="medium" *ngIf="deliveries.length === 0">
         <p>No deliveries found.</p>
       </ion-text>
     </ion-card-content>
-</ion-card>
+  </ion-card>
 
   <!-- Shop Location Management Section -->
   <ion-card>
@@ -190,7 +255,7 @@
         <ion-input type="number" [(ngModel)]="shopLocation.longitude" placeholder="Enter longitude"></ion-input>
       </ion-item>
       <ion-button expand="full" (click)="saveShopLocation()" [disabled]="shopLocationLoading">
-        Save Shop Location
+        Save Location
       </ion-button>
       <ion-text color="medium" *ngIf="shopLocationLoading">
         <p>Saving shop location...</p>
@@ -232,7 +297,7 @@
       <ion-card-title>Chat Support</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-button expand="full" (click)="navigateToChatSupport()">Manage Chat Support</ion-button>
+      <ion-button expand="full" (click)="navigateToChatSupport()">Chat Support</ion-button>
     </ion-card-content>
   </ion-card>
 

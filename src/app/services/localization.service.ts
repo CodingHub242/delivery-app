@@ -20,9 +20,9 @@ export interface LanguageInfo {
 })
 export class LocalizationService {
   private currentCurrency = new BehaviorSubject<CurrencyInfo>({
-    code: 'USD',
-    symbol: '$',
-    name: 'US Dollar',
+    code: 'GHS',
+    symbol: 'GH₵',
+    name: 'Ghanaian Cedi',
     rate: 1
   });
 

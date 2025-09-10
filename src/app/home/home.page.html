@@ -11,28 +11,90 @@
     </ion-toolbar>
   </ion-header>
 
-  <div class="container">
+  <div class="containerr">
     <div class="hero-slider">
-      <div 
-        class="slide" 
-        *ngFor="let slide of slides; let i = index" 
-        [class.active]="i === currentSlideIndex"
-        [style.background-color]="slide.bgColor"
-        [style.background-image]="'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(' + slide.bgImage + ')'"
-        style="background-size: cover; background-position: center;"
-      >
-        <div class="slide-content">
-          <h1>{{ slide.title }}</h1>
-          <p>{{ slide.subtitle }}</p>
+      <div class="owl-carousel">
+        <div> Your Content </div>
+        <div> Your Content </div>
+        <div> Your Content </div>
+        <div> Your Content </div>
+        <div> Your Content </div>
+        <div> Your Content </div>
+        <div> Your Content </div>
+      </div>
+      <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label=""></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label=""></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3" aria-label=""></button>
         </div>
+        <div class="carousel-inner">
+          <div *ngFor="let slide of slides">
+            <div class="carousel-item active"  style="background-color:'{{slide.bgColor}}';background-image:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('{{slide.bgImage }} ');background-position: top;background-repeat: no-repeat;background-size: cover;" >
+              <!-- <img src="../../assets/img/s1.jpg" style="object-fit: cover;object-position: top;" class="d-block w-100" alt="..."> -->
+              <div class="carousel-caption d-block d-md-block" style="margin-top: -20px;">
+                <h1 style="margin-top: -17% !important;">{{ slide.title }}</h1>
+                <p>{{ slide.subtitle }}</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- <div class="carousel-item">
+            <img src="..." class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+              <h5>Second slide label</h5>
+              <p>Some representative placeholder content for the second slide.</p>
+            </div>
+          </div> -->
+          <!-- <div class="carousel-item">
+            <img src="..." class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+              <h5>Third slide label</h5>
+              <p>Some representative placeholder content for the third slide.</p>
+            </div>
+          </div> -->
+        </div>
+        <!-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button> -->
       </div>
-      <div class="slider-dots">
-        <span 
-          *ngFor="let slide of slides; let i = index" 
-          [class.active]="i === currentSlideIndex"
-          (click)="currentSlideIndex = i"
-        ></span>
-      </div>
+
+
+      <!-- <swiper-container [pagination]="true" [autoplay]="true" [zoom]="true" [zoom]="false" [slidesPerView]="1" class="swiper-bg" style="width: 100%;">
+      <swiper-slide  [style.background-color]="slide.bgColor" [style.background-image]="'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(' + slide.bgImage + ')'" *ngFor="let slide of slides" style="width: 100%;width: 100%;height: 500px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;">
+         <div class="slide-content">
+            <h1>{{ slide.title }}</h1>
+            <p>{{ slide.subtitle }}</p>
+          </div>
+      </swiper-slide>
+    </swiper-container> -->
+      <!-- <swiper-container
+        #swiperContainer
+        [config]="swiperConfig"
+        init="false"
+        class="mySwiper"
+      >
+        <swiper-slide
+          *ngFor="let slide of slides; let i = index"
+          [style.background-color]="slide.bgColor"
+          [style.background-image]="'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(' + slide.bgImage + ')'"
+        >
+          <div class="slide-content">
+            <h1>{{ slide.title }}</h1>
+            <p>{{ slide.subtitle }}</p>
+          </div>
+        </swiper-slide>
+      </swiper-container> -->
+     
     </div>
 
 
@@ -48,12 +110,81 @@
         <ion-card-content>
           <ion-icon name="warning" size="large"></ion-icon>
           <p>{{ error }}</p>
-          <ion-button (click)="loadServices()" fill="clear">
+          <ion-button (click)="ReloadServices()" fill="clear">
             {{ 'try_again' | translate }}
           </ion-button>
         </ion-card-content>
       </ion-card>
     </div>
+
+    <div class="row mt-4" *ngIf="!loading && !error && services.length > 0">
+        <div class="column"   *ngFor="let service of services">
+          <div class="card" (click)="selectService(service)">
+            <div class="icon-wrapper">
+              <ion-icon [name]="getServiceIcon(service.name)" size="large"></ion-icon>
+            </div>
+            <h3>{{ service.name }}</h3>
+            <p>
+              {{ service.description || ('professional_service' | translate) }}
+            </p>
+            <hr style="height: 1px;background: rgba(169, 169, 169, 0.39);margin-top: 5px;margin-bottom: 5px;">
+            <div class="service-price" style="color:#000;">
+              <strong>{{ 'from' | translate }} :<br> <span style="font-size:1.6rem;color:#000;">{{ service.base_price | localCurrency }}</span></strong>
+            </div>
+            <div class="service-distance" style="color:darkgray;font-style: italic;" *ngIf="service.distance_rate > 0">
+              <small>+ {{ service.distance_rate | localCurrency }}{{ 'per_mile_over' | translate }}</small>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="column">
+          <div class="card">
+            <div class="icon-wrapper">
+              <i class="fas fa-wrench"></i>
+            </div>
+            <h3>Service Heading</h3>
+            <p>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam
+              consequatur necessitatibus eaque.
+            </p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="card">
+            <div class="icon-wrapper">
+              <i class="fas fa-truck-pickup"></i>
+            </div>
+            <h3>Service Heading</h3>
+            <p>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam
+              consequatur necessitatibus eaque.
+            </p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="card">
+            <div class="icon-wrapper">
+              <i class="fas fa-broom"></i>
+            </div>
+            <h3>Service Heading</h3>
+            <p>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam
+              consequatur necessitatibus eaque.
+            </p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="card">
+            <div class="icon-wrapper">
+              <i class="fas fa-plug"></i>
+            </div>
+            <h3>Service Heading</h3>
+            <p>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam
+              consequatur necessitatibus eaque.
+            </p>
+          </div>
+        </div> -->
+      </div>
 
     <!-- Services Grid -->
     <!-- <div *ngIf="!loading && !error" class="services-grid services-section">
@@ -89,7 +220,7 @@
         </ion-row>
       </ion-grid>
     </div> -->
-    <div *ngIf="!loading && !error && services.length > 0" class="services-section">
+    <!-- <div *ngIf="!loading && !error && services.length > 0" class="services-section">
       <div class="section-header">
         <h2 class="section-title">{{ 'Our Services' | translate }}</h2>
       </div>
@@ -133,47 +264,35 @@
                 class="select-button"
               >
                 <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
-                {{ 'select_service' | translate }}
+                {{ 'book service' | translate }}
               </ion-button>
             </div>
           </div>
         </div>
       </div>
+    </div> -->
+
+    <!-- New Promo Area Section -->
+    <div class="promo-area-section">
+      <div class="promo-area-grid">
+        <div class="promo-card">
+          <h3>15% OFF</h3>
+          <p>For sales > 300 Cedis</p>
+        </div>
+        <div class="promo-card">
+          <h3>30% OFF</h3>
+          <p>For sales > 1000 Cedis</p>
+        </div>
+        <div class="promo-card">
+          <h3>10% OFF</h3>
+          <p>For sales > 2000 Cedis</p>
+        </div>
+      </div>
     </div>
 
-    <!-- <div class="shop-products">
-      <h2>{{ 'shop_products' | translate }}</h2>
-      <ion-grid>
-        <ion-row>
-          <ion-col 
-            size="12" 
-            size-md="6" 
-            size-lg="4" 
-            *ngFor="let product of shopProducts"
-          >
-            <ion-card class="product-card">
-              <ion-card-header>
-                <ion-card-title>{{ product.name }}</ion-card-title>
-              </ion-card-header>
-              <ion-card-content>
-                <img *ngIf="product.image_url" [src]="product.image_url" alt="{{ product.name }}" />
-                <p>{{ product.description || ('no_description_available' | translate) }}</p>
-                <p>Stock : {{ product.stock_quantity || ('no_stock_available' | translate) }}</p>
-                <div class="product-price">
-                  <strong>{{ product.base_price | localCurrency }}</strong>
-                </div>
-                <ion-button expand="block" (click)="addToCart(product)">
-                  {{ 'add_to_cart' | translate }}
-                </ion-button>
-              </ion-card-content>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </div> -->
     <div *ngIf="shopProducts && shopProducts.length > 0" class="shop-section">
       <div class="section-header">
-        <h2 class="section-title">{{ 'Our Hot Sales' | translate }}</h2>
+        <h2 class="section-title">{{ 'Recommended' | translate }}</h2>
       </div>
       
       <div class="products-grid">
@@ -215,9 +334,9 @@
           
           <div class="product-content">
             <h3 class="product-title">{{ product.name }}</h3>
-            <p class="product-description">
+            <!-- <p class="product-description">
               {{ product.description || ('no_description_available' | translate) }}
-            </p>
+            </p> -->
             
             <div class="product-footer">
               <div class="product-price">
@@ -263,9 +382,9 @@
   </ion-toast>
 
   <!-- Chat FAB Button -->
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="quick-actions">
+  <!-- <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="quick-actions">
     <ion-fab-button (click)="navigateToChat()">
       <ion-icon name="chatbubble"></ion-icon>
     </ion-fab-button>
-  </ion-fab>
+  </ion-fab> -->
 </ion-content>

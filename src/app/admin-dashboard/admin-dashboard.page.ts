@@ -173,6 +173,14 @@ export class AdminDashboardPage implements OnInit, OnDestroy, AfterViewInit {
   currentUser: any = null;
   activeTab: string = 'conversations';
 
+  // Expanded state for "See More" functionality
+  servicesExpanded: boolean = false;
+  workersExpanded: boolean = false;
+  productsExpanded: boolean = false;
+  serviceRequestsExpanded: boolean = false;
+  ordersExpanded: boolean = false;
+  deliveriesExpanded: boolean = false;
+
   // Loading states for add operations
   addingService: boolean = false;
   addingWorker: boolean = false;
@@ -881,8 +889,6 @@ export class AdminDashboardPage implements OnInit, OnDestroy, AfterViewInit {
       longitude: this.shopLocation.longitude
     };
 
-    alert(this.shopLocation);
-
     if(this.shopLocation && this.shopLocation.address && this.shopLocation.address !== "No active shop location found")
     {
       this.apiService.updateShopLocation(locationData).subscribe({
@@ -1172,6 +1178,31 @@ export class AdminDashboardPage implements OnInit, OnDestroy, AfterViewInit {
     if (addressInput) addressInput.value = this.shopLocation.address;
     if (latInput) latInput.value = this.shopLocation.latitude.toString();
     if (lngInput) lngInput.value = this.shopLocation.longitude.toString();
+  }
+
+  // See More methods for expanding item lists
+  seeMoreServices() {
+    this.servicesExpanded = !this.servicesExpanded;
+  }
+
+  seeMoreWorkers() {
+    this.workersExpanded = !this.workersExpanded;
+  }
+
+  seeMoreProducts() {
+    this.productsExpanded = !this.productsExpanded;
+  }
+
+  seeMoreServiceRequests() {
+    this.serviceRequestsExpanded = !this.serviceRequestsExpanded;
+  }
+
+  seeMoreOrders() {
+    this.ordersExpanded = !this.ordersExpanded;
+  }
+
+  seeMoreDeliveries() {
+    this.deliveriesExpanded = !this.deliveriesExpanded;
   }
 
   ngAfterViewInit() {

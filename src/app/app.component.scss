@@ -1,18 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 ion-header {
-  padding-top: env(safe-area-inset-top);
-  padding-top: constant(safe-area-inset-top);
+  margin-top: 50px;
+  padding-top: env(safe-area-inset-top,50px);
+  padding-top: constant(safe-area-inset-top,50px);
+  --padding-top: env(safe-area-inset-top,50px);
+  --padding-top: constant(safe-area-inset-top,50px);
   background: #f4f4f4;
   --background:#f4f4f4;
+  font-family: "Montserrat", sans-serif;
+}
+ion-router-outlet{
+  margin-top: 50px;
+  font-family: "Montserrat", sans-serif;
 }
 ion-content{
-  padding-top: env(safe-area-inset-top);
-  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top,50px);
+  padding-top: constant(safe-area-inset-top,50px);
+  --padding-top: env(safe-area-inset-top,50px);
+  --padding-top: constant(safe-area-inset-top,50px);
 }
 ion-toolbar{
   padding-top: env(safe-area-inset-top);
   padding-top: constant(safe-area-inset-top);
+  --padding-top: env(safe-area-inset-top,50px);
+  --padding-top: constant(safe-area-inset-top,50px);
   background: #f4f4f4;
   --background:#f4f4f4;
+  font-family: "Montserrat", sans-serif;
+  color:#000;
+  --color:#000;
 }
 .user-dropdown {
   position: relative;
@@ -41,6 +58,7 @@ ion-toolbar{
 ion-list {
   padding: 0;
   margin: 0;
+  font-family: "Montserrat", sans-serif;
 }
 
 ion-item {
@@ -48,6 +66,9 @@ ion-item {
   --padding-end: 16px;
   --min-height: 48px;
   cursor: pointer;
+  --color:#000;
+  color:#000;
+  font-family: "Montserrat", sans-serif;
 
   &:hover {
     background: var(--ion-color-light);
@@ -56,9 +77,15 @@ ion-item {
 
 ion-label {
   font-size: 14px;
+  color:#000;
+  font-family: "Montserrat", sans-serif;
 }
 
 ion-icon {
   font-size: 18px;
   margin-right: 12px;
+}
+
+ion-button{
+  font-family: "Montserrat", sans-serif;
 }
