@@ -1,4 +1,4 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="toggleSidebar()">
@@ -18,7 +18,7 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content>
   <div class="dashboard-container" [class.sidebar-collapsed]="sidebarCollapsed">
@@ -28,37 +28,37 @@
         <ion-icon slot="start" name="speedometer"></ion-icon>
         <ion-label>Dashboard</ion-label>
       </ion-item>
-      <ion-item button [class.active]="activeMenu === 'analytics'" (click)="setActiveMenu('analytics')">
-        <ion-icon slot="start" name="analytics"></ion-icon>
-        <ion-label>Analytics</ion-label>
-      </ion-item>
-      <ion-item button [class.active]="activeMenu === 'advertisement'" (click)="setActiveMenu('advertisement')">
-        <ion-icon slot="start" name="megaphone"></ion-icon>
-        <ion-label>Advertisement</ion-label>
-      </ion-item>
       <ion-item button [class.active]="activeMenu === 'management'" (click)="setActiveMenu('management')">
+        <ion-icon slot="start" name="analytics"></ion-icon>
+        <ion-label>Service Management</ion-label>
+      </ion-item>
+      <ion-item button [class.active]="activeMenu === 'worker-management'" (click)="setActiveMenu('worker-management')">
+        <ion-icon slot="start" name="megaphone"></ion-icon>
+        <ion-label>Worker Management</ion-label>
+      </ion-item>
+      <ion-item button [class.active]="activeMenu === 'product-management'" (click)="setActiveMenu('product-management')">
         <ion-icon slot="start" name="settings"></ion-icon>
-        <ion-label>Management</ion-label>
+        <ion-label>Product Management</ion-label>
       </ion-item>
-      <ion-item button [class.active]="activeMenu === 'helpdesk'" (click)="setActiveMenu('helpdesk')">
+      <ion-item button [class.active]="activeMenu === 'service-requests'" (click)="setActiveMenu('service-requests')">
         <ion-icon slot="start" name="help-circle"></ion-icon>
-        <ion-label>Helpdesk</ion-label>
+        <ion-label>Service Requests</ion-label>
       </ion-item>
-      <ion-item button [class.active]="activeMenu === 'monitoring'" (click)="setActiveMenu('monitoring')">
+      <ion-item button [class.active]="activeMenu === 'orders-management'" (click)="setActiveMenu('orders-management')">
         <ion-icon slot="start" name="eye"></ion-icon>
-        <ion-label>Monitoring</ion-label>
+        <ion-label>Order Management</ion-label>
       </ion-item>
-      <ion-item button [class.active]="activeMenu === 'crypto'" (click)="setActiveMenu('crypto')">
+      <ion-item button [class.active]="activeMenu === 'shop-location'" (click)="setActiveMenu('shop-location')">
         <ion-icon slot="start" name="logo-bitcoin"></ion-icon>
-        <ion-label>Crypto</ion-label>
+        <ion-label>Location Setup</ion-label>
       </ion-item>
       <ion-item button [class.active]="activeMenu === 'project-management'" (click)="setActiveMenu('project-management')">
         <ion-icon slot="start" name="briefcase"></ion-icon>
         <ion-label>Project Management</ion-label>
       </ion-item>
-      <ion-item button [class.active]="activeMenu === 'product'" (click)="setActiveMenu('product')">
+      <ion-item button [class.active]="activeMenu === 'notifications'" (click)="setActiveMenu('notifications')">
         <ion-icon slot="start" name="cube"></ion-icon>
-        <ion-label>Product</ion-label>
+        <ion-label>Promotional Messages</ion-label>
       </ion-item>
       <ion-item button [class.active]="activeMenu === 'statistics'" (click)="setActiveMenu('statistics')">
         <ion-icon slot="start" name="bar-chart"></ion-icon>

@@ -715,14 +715,13 @@ export class AdminDashboardPage implements OnInit, OnDestroy, AfterViewInit {
   private getSectionId(menu: string): string | null {
     const sectionMap: { [key: string]: string } = {
       'dashboard': 'hero-section',
-      'analytics': 'analytics-section',
-      'advertisement': 'advertisement',
+      'worker-management': 'worker-management',
+      'product-management': 'product-management',
       'management': 'service-management', // Default to service management
-      'helpdesk': 'helpdesk',
-      'monitoring': 'monitoring',
-      'crypto': 'crypto',
-      'project-management': 'project-management',
-      'product': 'product-management',
+      'notifications': 'notifications',
+      'service-requests': 'service-requests',
+      'orders-management': 'orders-management',
+      'shop-location': 'shop-location',
       'statistics': 'statistics'
     };
 

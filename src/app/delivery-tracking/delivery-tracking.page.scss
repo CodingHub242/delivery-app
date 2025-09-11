@@ -13,6 +13,10 @@ ion-content{
 }
 
 ion-card {
+  background: #fff;
+  --background:#fff;
+  color:#000;
+  --color:#000;
   margin-bottom: 16px;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
@@ -26,6 +30,8 @@ ion-card-title {
   font-size: 1.2rem;
   font-weight: 600;
   display: flex;
+  color:#000;
+  --color:#000;
   align-items: center;
 }
 
@@ -46,11 +52,11 @@ ion-item {
     h3 {
       font-weight: 600;
       margin-bottom: 4px;
-      color: var(--ion-color-dark);
+      color: #000;
     }
     
     p {
-      color: var(--ion-color-medium);
+      color: gray;
       margin: 2px 0;
       font-size: 0.9rem;
     }
@@ -199,7 +205,7 @@ ion-card {
       h3 {
         margin: 0 0 4px 0;
         font-weight: 600;
-        color: var(--ion-color-dark);
+        color: #000;
       }
 
       .rating {
@@ -209,7 +215,7 @@ ion-card {
       }
 
       .vehicle-info {
-        color: var(--ion-color-medium);
+        color: gray;
         font-size: 0.9rem;
       }
     }

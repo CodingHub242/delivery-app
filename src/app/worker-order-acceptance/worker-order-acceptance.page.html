@@ -1,17 +1,5 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>My Orders</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">My Orders</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <!-- Location Permission Status -->
+ <!-- Location Permission Status -->
   <ion-card *ngIf="!hasLocationPermission" color="warning">
     <ion-card-content>
       <ion-icon name="location" slot="start"></ion-icon>

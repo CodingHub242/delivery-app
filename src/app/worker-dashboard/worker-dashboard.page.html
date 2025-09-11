@@ -1,10 +1,6 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Worker Dashboard</ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content>
+
+<ion-content class="worker-dashboard">
   <!-- Loading Spinner -->
   <div *ngIf="isLoading" class="loading-container">
     <ion-spinner name="crescent"></ion-spinner>
@@ -13,99 +9,73 @@
 
   <!-- Dashboard Content -->
   <div class="dashboard-content" *ngIf="!isLoading">
-    <!-- Worker Info Card -->
-    <ion-card *ngIf="workerDetails">
-      <ion-card-content>
-        <ion-grid style="margin-top: 25px;">
-          <ion-row>
-            <ion-col size="8">
-              <h2>{{ workerDetails.name }}</h2>
-              <p>{{ workerDetails.vehicle_type }} - {{ workerDetails.phone_number }}</p>
-            </ion-col>
-            <ion-col size="4" class="text-right">
-              <ion-badge [color]="workerStats.isAvailable ? 'success' : 'danger'">
-                {{ workerStats.isAvailable ? 'Available' : 'Unavailable' }}
-              </ion-badge>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-content>
-    </ion-card>
-
-    <!-- Availability Toggle -->
-    <ion-card>
-      <ion-card-content>
-        <ion-item>
+  <!-- Hero Section -->
+  <div class="hero-section" *ngIf="workerDetails">
+    <div class="hero-header">
+      <div class="hero-info">
+        <h1>Welcome, {{ workerDetails.name }}!</h1>
+        <p>Manage your services and all assigned operations with ease</p>
+      </div>
+      <div class="hero-status">
+        <ion-badge [color]="workerStats.isAvailable ? 'success' : 'danger'" class="status-badge">
+          {{ workerStats.isAvailable ? 'Available' : 'Unavailable' }}
+        </ion-badge>
+        <div class="toggle-container">
           <ion-label>Available for Orders</ion-label>
           <ion-toggle
-            slot="end"
             [checked]="workerStats.isAvailable"
             (ionChange)="toggleAvailability()">
           </ion-toggle>
-        </ion-item>
-      </ion-card-content>
-    </ion-card>
-
-    <!-- Quick Actions -->
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Quick Actions</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
+        </div>
+      </div>
+      <div class="quick-actions">
         <ion-button
-          expand="block"
-          color="primary"
           (click)="navigateToOrderAcceptance()">
           <ion-icon slot="start" name="navigate"></ion-icon>
           View Order Requests
         </ion-button>
-      </ion-card-content>
-    </ion-card>
+      </div>
+    </div>
 
-    <!-- Statistics Cards -->
-    <ion-grid>
-      <ion-row>
-        <ion-col size="6">
-          <ion-card>
-            <ion-card-content class="stat-card">
+    <!-- Statistics Cards inside Hero -->
+    <div class="hero-stats">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <div class="stat-card-glass">
               <ion-icon name="stats-chart" color="primary"></ion-icon>
               <h3>{{ workerStats.totalOrders }}</h3>
               <p>Total Orders</p>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-        <ion-col size="6">
-          <ion-card>
-            <ion-card-content class="stat-card">
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="stat-card-glass">
               <ion-icon name="checkmark-circle" color="success"></ion-icon>
               <h3>{{ workerStats.completedOrders }}</h3>
               <p>Completed</p>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="6">
-          <ion-card>
-            <ion-card-content class="stat-card">
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">
+            <div class="stat-card-glass">
               <ion-icon name="wallet" color="warning"></ion-icon>
               <h3>{{ formatCurrency(workerStats.totalEarnings) }}</h3>
               <p>Earnings</p>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-        <ion-col size="6">
-          <ion-card>
-            <ion-card-content class="stat-card">
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="stat-card-glass">
               <ion-icon name="star" color="tertiary"></ion-icon>
               <h3>{{ workerStats.averageRating }}</h3>
               <p>Rating</p>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
+   
     <!-- Recent Orders -->
     <ion-card>
       <ion-card-header>
@@ -126,6 +96,30 @@
         </ion-list>
         <ng-template #noOrders>
           <p class="no-orders">No recent orders</p>
+        </ng-template>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Recent Services -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Recent Services</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list *ngIf="recentServices && recentServices.length > 0; else noServices">
+          <ion-item *ngFor="let service of recentServices" button>
+            <ion-icon name="construct" slot="start" color="primary"></ion-icon>
+            <ion-label>
+              <h3>{{ service.name }}</h3>
+              <p>{{ service.description }}</p>
+              <p>Base Price: {{ formatCurrency(service.base_price) }}</p>
+            </ion-label>
+            <ion-badge slot="end" color="success" *ngIf="service.is_active">Active</ion-badge>
+            <ion-badge slot="end" color="medium" *ngIf="!service.is_active">Inactive</ion-badge>
+          </ion-item>
+        </ion-list>
+        <ng-template #noServices>
+          <p class="no-services">No recent services</p>
         </ng-template>
       </ion-card-content>
     </ion-card>

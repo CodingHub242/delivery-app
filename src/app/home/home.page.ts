@@ -186,7 +186,7 @@ export class HomePage implements OnInit, AfterViewInit {
 
   constructor(
     private apiService: ApiService,
-    private authService: AuthService,
+    public authService: AuthService,
     private router: Router,
     private platform: Platform,
     private refreshService: RefreshService,
@@ -209,7 +209,16 @@ export class HomePage implements OnInit, AfterViewInit {
     this.preloadSliderImages(); // Preload slider images to prevent loading delays
     this.loadServices();
     this.loadShopProducts(); // Load shop products
-    this.currentUSer = this.authService.getUserFromStorage();
+    this.authService.currentUser = this.authService.getUserFromStorage();
+
+    if(this.authService.currentUser.role=='admin'){
+      this.router.navigate(['/admin-dashboard']);
+    }
+    else if(this.authService.currentUser.role=='worker'){
+      this.router.navigate(['/worker-dashboard']);
+    }else{
+      // Stay on home page for customers and guests
+    } 
 
     // Check for promotional notifications
     await this.notificationService.checkAndShowNotifications();

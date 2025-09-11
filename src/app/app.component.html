@@ -12,11 +12,11 @@
             <ion-icon name="chevron-down" slot="end"></ion-icon>
           </ion-button>
         </div>
-        <app-cart-icon></app-cart-icon>
+        <app-cart-icon *ngIf="authService.currentUser.role=='customer'"></app-cart-icon>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
-  <ion-header *ngIf="!currentUser">
+  <ion-header *ngIf="!authService.currentUser">
     <ion-toolbar>
      <img src="../assets/img/logo.png" style="padding-left: 10px;" width="50px" alt="App Logo" class="app-logo" />
       <ion-buttons slot="end">

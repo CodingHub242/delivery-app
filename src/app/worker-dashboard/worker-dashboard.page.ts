@@ -32,6 +32,14 @@ interface RecentOrder {
   };
 }
 
+interface RecentService {
+  id: number;
+  name: string;
+  description: string;
+  base_price: number;
+  is_active: boolean;
+}
+
 @Component({
   selector: 'app-worker-dashboard',
   templateUrl: './worker-dashboard.page.html',
@@ -53,6 +61,7 @@ export class WorkerDashboardPage implements OnInit, OnDestroy {
   };
 
   recentOrders: RecentOrder[] = [];
+  recentServices: RecentService[] = [];
   isLoading = false;
   workerDetails: any = null;
 
@@ -69,7 +78,35 @@ export class WorkerDashboardPage implements OnInit, OnDestroy {
     await this.loadWorkerDetails();
     await this.loadWorkerStats();
     await this.loadRecentOrders();
+    await this.loadMockRecentServices();
     this.loadUser();
+  }
+
+  async loadMockRecentServices(): Promise<void> {
+    // Mock data for recent services
+    this.recentServices = [
+      {
+        id: 1,
+        name: 'Express Delivery',
+        description: 'Fast delivery within 2 hours',
+        base_price: 15.0,
+        is_active: true
+      },
+      {
+        id: 2,
+        name: 'Standard Delivery',
+        description: 'Delivery within 24 hours',
+        base_price: 5.0,
+        is_active: true
+      },
+      {
+        id: 3,
+        name: 'Grocery Pickup',
+        description: 'Pickup and delivery of groceries',
+        base_price: 10.0,
+        is_active: false
+      }
+    ];
   }
 
   loadUser() {
@@ -129,9 +166,23 @@ export class WorkerDashboardPage implements OnInit, OnDestroy {
         this.workerStats.totalEarnings = orders
           .filter((order: any) => order.status === 'delivered')
           .reduce((total: number, order: any) => total + (order.actual_cost || order.estimated_cost || 0), 0);
+      }
 
-        // For now, set a default rating (you might want to fetch from API)
-        this.workerStats.averageRating = 4.5;
+      // Fetch actual average rating from API
+      try {
+        const ratingsResponse = await this.apiService.getWorkerRatings(this.workerDetails.id).toPromise();
+        if (ratingsResponse && ratingsResponse.success && ratingsResponse.data) {
+          const ratings = ratingsResponse.data;
+          if (ratings.length > 0) {
+            const totalRating = ratings.reduce((sum: number, rating: any) => sum + (rating.rating || 0), 0);
+            this.workerStats.averageRating = totalRating / ratings.length;
+          } else {
+            this.workerStats.averageRating = 0; // No ratings yet
+          }
+        }
+      } catch (ratingError) {
+        console.error('Error loading worker ratings:', ratingError);
+        this.workerStats.averageRating = 0; // Default to 0 if ratings can't be fetched
       }
     } catch (error) {
       console.error('Error loading worker stats:', error);
@@ -189,7 +240,8 @@ export class WorkerDashboardPage implements OnInit, OnDestroy {
   async doRefresh(event: any): Promise<void> {
     await Promise.all([
       this.loadWorkerStats(),
-      this.loadRecentOrders()
+      this.loadRecentOrders(),
+      this.loadMockRecentServices()
     ]);
     event.target.complete();
   }
