@@ -38,6 +38,7 @@ ion-content{
   overflow: hidden;
   margin: 0;
   width: 50%;
+  max-width: 400px;
 
   .login-content {
     padding: 40px 32px;
@@ -53,4 +54,13 @@ ion-button{
   --color: white;
   width:40%;
   margin: auto;
+}
+
+@media (max-width: 600px) {
+  .login-card {
+    width: 90%;
+  }
+  ion-button {
+    width: 100%;
+  }
 }
