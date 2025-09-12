@@ -17,7 +17,7 @@
   <div class="hero-section" *ngIf="workerDetails">
     <div class="hero-header">
       <div class="hero-info">
-        <h1>Welcome, {{ workerDetails.name }}!</h1>
+        <h1 class="text-white">Welcome, {{ workerDetails.name }}!</h1>
         <p>Manage your services and all assigned operations with ease</p>
       </div>
       <div class="hero-status">
@@ -81,13 +81,13 @@
   </div>
    
     <!-- Recent Orders -->
-    <ion-card>
+    <ion-card style="background: #fff;">
       <ion-card-header>
         <ion-card-title>Recent Orders</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ion-list *ngIf="recentOrders.length > 0; else noOrders">
-          <ion-item *ngFor="let order of recentOrders" button (click)="navigateToOrderAcceptance()">
+        <ion-list *ngIf="recentOrders.length > 0; else noOrders" style="background: #fff;--background: #fff;">
+          <ion-item *ngFor="let order of recentOrders" button (click)="navigateToOrderAcceptance()" style="background: #fff;--background: #fff;">
             <ion-label>
               <h3>Order #{{ order.tracking_id }}</h3>
               <p>{{ order.user?.name }} - {{ formatCurrency(order.estimated_cost) }}</p>
@@ -105,13 +105,13 @@
     </ion-card>
 
     <!-- Recent Services -->
-    <ion-card>
+    <ion-card style="background: #fff;">
       <ion-card-header>
         <ion-card-title>Recent Services</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ion-list *ngIf="recentServices && recentServices.length > 0; else noServices">
-          <ion-item *ngFor="let service of recentServices" button>
+        <ion-list *ngIf="recentServices && recentServices.length > 0; else noServices" style="background: #fff;--background: #fff;">
+          <ion-item *ngFor="let service of recentServices" button style="background: #fff;--background: #fff;">
             <ion-icon name="construct" slot="start" color="primary"></ion-icon>
             <ion-label>
               <h3>{{ service.name }}</h3>

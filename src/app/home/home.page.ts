@@ -95,6 +95,7 @@ export class HomePage implements OnInit, AfterViewInit {
   showToast: boolean = false;
   toastMessage: string = '';
   itemCount: number = 0;
+  isMobilePlatform: boolean = false; // New property to track mobile platform
 
   infoCards = [
     {
@@ -210,17 +211,27 @@ export class HomePage implements OnInit, AfterViewInit {
   }
 
   async ngOnInit() {
+     this.isMobilePlatform = this.platform.is('mobile');
     this.preloadSliderImages(); // Preload slider images to prevent loading delays
     this.loadServices();
     this.loadShopProducts(); // Load shop products
     this.authService.currentUser = this.authService.getUserFromStorage();
 
+    //////////CHECK IF USER IS LOGGED IN AND REDIRECT TO THEIR PROFILE OR ADMIN DASHBOARD
     if(this.authService.currentUser.role=='admin'){
       this.router.navigate(['/admin-dashboard']);
     }
     else if(this.authService.currentUser.role=='worker'){
       this.router.navigate(['/worker-dashboard']);
-    }else{
+    }
+    else{
+      if(!this.isMobilePlatform)
+      {
+        this.router.navigate(['/login']);
+      }
+      else{
+
+      }
       // Stay on home page for customers and guests
     } 
 

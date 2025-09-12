@@ -89,4 +89,8 @@ export class LoginPage {
   navigateToWork() {
     this.router.navigate(['/worker-login']);
   }
+
+  navigateToGuest() {
+    this.router.navigate(['/home']);
+  }
 }

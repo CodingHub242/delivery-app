@@ -2,4 +2,25 @@
   --width: 200px;
   --height: auto;
   --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --background:#fff;
+  background: #fff;
+  color:#000;
+  --color:#000;
+}
+
+ion-list{
+  background: #fff;
+  --background:#fff;
+
+  ion-icon{
+    color:#000;
+    --color:#000;
+  }
+
+  ion-item{
+    --background:#fff;
+    background: #fff;
+    color:#000;
+    --color:#000;
+  }
 }

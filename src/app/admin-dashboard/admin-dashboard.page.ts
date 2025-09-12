@@ -27,6 +27,7 @@ import {
   IonRadio
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
+import { Platform } from '@ionic/angular';
 import { ApiService } from '../services/api.service';
 import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -97,6 +98,8 @@ export class AdminDashboardPage implements OnInit, OnDestroy, AfterViewInit {
   serviceRequestAnalytics: any = {};
   deliveryAnalytics: any = {};
   locationAnalytics: any = {};
+  isMobilePlatform: boolean = false; // New property to track mobile platform
+
 // Chart data
   serviceRequestsChartData: ChartData<'bar'> = {
     labels: [],
@@ -200,7 +203,8 @@ export class AdminDashboardPage implements OnInit, OnDestroy, AfterViewInit {
     private apiService: ApiService,
     public authService: AuthService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private platform: Platform
   ) {
     addIcons({ person, chatbubble, time, arrowBack, add, create, trash, document: documentIcon, location, car, cash, informationCircle, personCircle });
     Chart.register(...registerables);
@@ -302,7 +306,8 @@ export class AdminDashboardPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-   
+    this.isMobilePlatform = this.platform.is('mobile');
+
     this.loadConversations();
     this.loadServices();
     this.loadWorkers();
