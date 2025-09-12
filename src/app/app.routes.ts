@@ -58,7 +58,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'admin-login',
     pathMatch: 'full',
   },
   {
