@@ -27,7 +27,7 @@ export class LocalizationService {
   });
 
   private currentLanguage = new BehaviorSubject<string>('en');
-  private userCountry = new BehaviorSubject<string>('US');
+  private userCountry = new BehaviorSubject<string>('GH');
 
   // Common currencies with symbols and names (rates will be fetched from API)
   private currencies: { [key: string]: CurrencyInfo } = {
@@ -82,7 +82,7 @@ export class LocalizationService {
   // Load currency rates from free API
   private loadCurrencyRates(): void {
     // Using ExchangeRate-API (free tier)
-    this.http.get('https://open.er-api.com/v6/latest/USD')
+    this.http.get('https://open.er-api.com/v6/latest/GHS')
       .subscribe({
         next: (data: any) => {
           if (data && data.rates) {
@@ -184,7 +184,7 @@ export class LocalizationService {
         },
         error: () => {
           // Default to US if detection fails
-          this.setUserCountry('US');
+          this.setUserCountry('GH');
         }
       });
   }
@@ -203,7 +203,7 @@ export class LocalizationService {
 
   // Currency methods
   setCurrency(currencyCode: string): void {
-    const currency = this.currencies[currencyCode.toUpperCase()] || this.currencies['USD'];
+    const currency = this.currencies[currencyCode.toUpperCase()] || this.currencies['GHS'];
     this.currentCurrency.next(currency);
     localStorage.setItem('preferredCurrency', currencyCode);
   }

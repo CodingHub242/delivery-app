@@ -13,9 +13,9 @@
 
   <div class="containerr">
    
-    <swiper-container [pagination]="true" [loop]="true" autoplay="true" [autoplay]="{delay:10000}" [slidesPerView]="1" class="section swiper-container swiper-slider swiper-slider-minimal"  effect="coverflow"  #swiperContainer>
+    <swiper-container [pagination]="true" [loop]="true" autoplay="true" [autoplay]="{delay:10000}" [simulateTouch]="false" [slidesPerView]="1" class="section swiper-container swiper-slider swiper-slider-minimal"  effect="coverflow"  #swiperContainer>
       
-          <swiper-slide *ngFor="let slide of slides" class="swiper-slide swiper-slide_video" style="background-image:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('{{slide.bgImage}}');background-repeat: no-repeat;background-size: cover;background-position: top;height: 400px;">
+          <swiper-slide *ngFor="let slide of slides" class="swiper-slide swiper-slide_video" style="background-image:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('{{slide.bgImage}}');background-repeat: no-repeat;background-size: cover;background-position: top;height: auto;">
             <div class="container">
               <div class="jumbotron-classic-content">
                 <div class="wow-outer">

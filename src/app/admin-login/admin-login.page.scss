@@ -2,10 +2,46 @@ ion-content{
   --background: linear-gradient(135deg, #ea66af 0%, #764ba2 100%);
 }
 .login-container {
-  max-width: 400px;
+  //  max-width: 100%;
   
-  height: 100%;
-  background: linear-gradient(135deg, #ea66af 0%, #764ba2 100%);
+  // height: 100%;
+  // background: linear-gradient(135deg, #ea66af 0%, #764ba2 100%);
+    min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile keyboards */
+  background: linear-gradient(135deg, #ea66a4 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // padding: 20px;
+  position: relative;
+  overflow-y: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="10" cy="50" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="50" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="90" r="0.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
+    pointer-events: none;
+  }
+}
+
+.login-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  margin: 0;
+  width: 50%;
+
+  .login-content {
+    padding: 40px 32px;
+  }
 }
 
 .error-message {
@@ -15,4 +51,6 @@ ion-content{
 ion-button{
   --background: linear-gradient(135deg, #ea66af 0%, #764ba2 100%);
   --color: white;
+  width:40%;
+  margin: auto;
 }

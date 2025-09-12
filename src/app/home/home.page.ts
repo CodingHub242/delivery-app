@@ -164,13 +164,7 @@ export class HomePage implements OnInit, AfterViewInit {
     //   bgColor: '#F4D550', // yellow
     //   bgImage: '../assets/img/s4.jpg'
     // },
-    {
-      title: 'CUSTOMER SATISFACTION',
-      subtitle: 'We value our customers',
-      description: 'Our top priority is ensuring our customers are satisfied with our services',
-      bgColor: '#FAF7D8', // light cream
-      bgImage: '../assets/img/s5.jpg'
-    }
+    
   ];
 
   swiperConfig: SwiperOptions = {
@@ -264,7 +258,7 @@ export class HomePage implements OnInit, AfterViewInit {
     const carouselItems = document.querySelectorAll('.carousel-item');
     const indicators = document.querySelectorAll('.carousel-indicators button');
 
-    console.log('Carousel Items:', indicators);
+   // console.log('Carousel Items:', indicators);
 
     // Remove 'active' class from all items and indicators
     carouselItems.forEach(item => item.classList.remove('active'));
@@ -289,6 +283,8 @@ export class HomePage implements OnInit, AfterViewInit {
       next: (services) => {
         this.services = services;
         this.loading = false;
+
+       // console.log('Services:', services);
 
         // Only fetch user deliveries if user is logged in
         if (this.currentUSer && this.currentUSer.id) {
