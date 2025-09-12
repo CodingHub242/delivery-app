@@ -8,8 +8,8 @@
   <div class="login-container">
     <ion-card>
       <ion-card-header>
-        <ion-card-title>Welcome Back</ion-card-title>
-        <ion-card-subtitle>Sign in to your worker account</ion-card-subtitle>
+        <ion-card-title class="text-center">Welcome Back</ion-card-title>
+        <ion-card-subtitle class="text-center">Sign in to your worker account</ion-card-subtitle>
       </ion-card-header>
 
       <ion-card-content>
@@ -47,7 +47,7 @@
 
         <div class="register-link ion-text-center ion-margin-top">
           <p>Don't have an account?
-            <a routerLink="/worker-register">Register here</a>
+            <a style="color:orange;" (click)="router.navigate(['/worker-register'])">Register here</a>
           </p>
         </div>
       </ion-card-content>

@@ -1,9 +1,18 @@
+ion-content{
+  --background: linear-gradient(135deg, #ea66af 0%, #764ba2 100%);
+}
 .login-container {
   max-width: 400px;
-  margin: auto;
+  
+  height: 100%;
+  background: linear-gradient(135deg, #ea66af 0%, #764ba2 100%);
 }
 
 .error-message {
   color: red;
   text-align: center;
+}
+ion-button{
+  --background: linear-gradient(135deg, #ea66af 0%, #764ba2 100%);
+  --color: white;
 }

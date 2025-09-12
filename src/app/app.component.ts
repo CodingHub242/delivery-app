@@ -55,7 +55,7 @@ export class AppComponent {
 
   constructor(
     public authService: AuthService,
-    private router: Router,
+    public router: Router,
     private apiService: ApiService,
     private refreshService: RefreshService,
     @Inject(PopoverController)private popoverController: PopoverController

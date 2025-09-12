@@ -21,8 +21,11 @@
      <img src="../assets/img/logo.png" style="padding-left: 10px;" width="50px" alt="App Logo" class="app-logo" />
       <ion-buttons slot="end">
       
-        <div class="user-dropdown">
-          <ion-button>
+         <!---Only show if on home page-->
+        <div class="user-dropdown" *ngIf="router.url === '/home'">
+         
+
+          <ion-button (click)="router.navigate(['/login'])" fill="clear">
             Login
           </ion-button>
         </div>

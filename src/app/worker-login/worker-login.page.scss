@@ -1,8 +1,11 @@
+ion-content{
+  --background: linear-gradient(135deg, #ea66a4 0%, #764ba2 100%);
+}
 .login-container {
   max-width: 400px;
   margin: 0 auto;
   padding: 20px;
-
+  background: linear-gradient(135deg, #ea66a4 0%, #764ba2 100%);
   ion-card {
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -17,6 +20,8 @@
     --border-radius: 8px;
     height: 48px;
     font-weight: 600;
+    --background: linear-gradient(135deg, #ea66a4 0%, #764ba2 100%);
+    --color:#fff;
   }
 
   .error-message {

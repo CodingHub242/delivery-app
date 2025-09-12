@@ -1,96 +1,271 @@
 .login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile keyboards */
+  background: linear-gradient(135deg, #ea66a4 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
+  position: relative;
+  overflow-y: hidden;
 
-ion-card {
-  max-width: 400px;
-  width: 100%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  border-radius: 15px;
-}
-
-ion-card-header {
-  text-align: center;
-  padding-bottom: 0;
-}
-
-ion-card-title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #333;
-}
-
-ion-item {
-  --background: transparent;
-  --border-color: #e0e0e0;
-  margin-bottom: 16px;
-  border-radius: 8px;
-}
-
-ion-label[position="stacked"] {
-  font-weight: 500;
-  color: #555;
-  margin-bottom: 8px;
-}
-
-ion-input {
-  --padding-start: 12px;
-  --padding-end: 12px;
-  --background: #f8f9fa;
-  border-radius: 8px;
-}
-
-.login-button {
-  --background: #667eea;
-  --background-activated: #5a67d8;
-  --background-focused: #5a67d8;
-  --background-hover: #5a67d8;
-  margin-top: 20px;
-  height: 48px;
-  font-weight: 600;
-}
-
-.error-message {
-  color: #e53e3e;
-  text-align: center;
-  margin: 12px 0;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.register-link {
-  text-align: center;
-  margin-top: 20px;
-  color: #666;
-}
-
-.link {
-  color: #667eea;
-  text-decoration: none;
-  cursor: pointer;
-  font-weight: 500;
-  
-  &:hover {
-    text-decoration: underline;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="10" cy="50" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="50" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="90" r="0.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
+    pointer-events: none;
   }
 }
 
-// Responsive design
+.login-wrapper {
+  width: 100%;
+  max-width: 450px;
+  z-index: 1;
+}
+
+// Brand Section
+.brand-section {
+  text-align: center;
+  margin-bottom: 40px;
+
+  .logo-container {
+    margin-bottom: 24px;
+
+    .brand-icon {
+      font-size: 4rem;
+      color: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .brand-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 12px 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    letter-spacing: -0.5px;
+  }
+
+  .brand-subtitle {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+    font-weight: 400;
+  }
+}
+
+// Login Card
+.login-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  margin: 0;
+
+  .login-content {
+    padding: 40px 32px;
+  }
+}
+
+// Form Styles
+.login-form {
+  .input-group {
+    position: relative;
+    margin-bottom: 24px;
+
+    .input-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      font-size: 1.2rem;
+      color: #667eea;
+      transition: color 0.3s ease;
+    }
+
+    .modern-input {
+      --background: rgba(255, 255, 255, 0.8);
+      --border-radius: 16px;
+      --padding-start: 48px;
+      --padding-end: 16px;
+      --padding-top: 8px;
+      --padding-bottom: 8px;
+      --border-color: rgba(102, 126, 234, 0.2);
+      --highlight-color-focused: #667eea;
+      margin: 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+
+      &:focus-within {
+        --border-color: #667eea;
+        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+
+        .input-icon {
+          color: #667eea;
+        }
+      }
+
+      ion-label {
+        color: #666;
+        font-weight: 500;
+        font-size: 0.9rem;
+        margin-bottom: 4px;
+      }
+
+      .modern-input-field {
+        --placeholder-color: #999;
+        --color: #333;
+        font-size: 1rem;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+// Error Message
+.error-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
+  border: 1px solid #fc8181;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin: 16px 0;
+  color: #c53030;
+  font-size: 0.9rem;
+  font-weight: 500;
+
+  .error-icon {
+    margin-right: 8px;
+    font-size: 1.1rem;
+  }
+}
+
+// Login Button
+.login-button {
+  --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --background-activated: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+  --background-focused: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+  --background-hover: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+  --border-radius: 16px;
+  --color: white;
+  height: 56px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  margin-top: 8px;
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(102, 126, 234, 0.4);
+  }
+
+  ion-icon {
+    font-size: 1.2rem;
+  }
+
+  ion-spinner {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+// Register Section
+.register-section {
+  margin-top: 32px;
+  text-align: center;
+
+  .register-text {
+    color: #666;
+    font-size: 0.95rem;
+    margin: 0;
+
+    .register-link {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transition: width 0.3s ease;
+      }
+
+      &:hover {
+        color: #5a67d8;
+
+        &::after {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+// Responsive Design
 @media (max-width: 480px) {
   .login-container {
-    padding: 10px;
+    padding: 16px;
   }
-  
-  ion-card {
-    margin: 0;
+
+  .brand-section {
+    margin-bottom: 32px;
+
+    .brand-title {
+      font-size: 2rem;
+    }
+
+    .brand-subtitle {
+      font-size: 1rem;
+    }
+
+    .logo-container .brand-icon {
+      font-size: 3rem;
+      padding: 16px;
+    }
   }
-  
-  ion-card-title {
-    font-size: 1.5rem;
+
+  .login-card .login-content {
+    padding: 32px 24px;
+  }
+
+  .input-group .modern-input {
+    --padding-start: 44px;
+  }
+}
+
+@media (max-width: 360px) {
+  .brand-section .brand-title {
+    font-size: 1.8rem;
+  }
+
+  .login-card .login-content {
+    padding: 24px 20px;
   }
 }

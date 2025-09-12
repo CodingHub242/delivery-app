@@ -38,3 +38,8 @@
 
 /* Leaflet CSS for maps */
 @import 'leaflet/dist/leaflet.css';
+
+swiper-container{
+ --swiper-pagination-bullet-inactive-color: rgba(255, 255, 255, 0.2);
+--swiper-pagination-bullet-active-color: #ffffff !important;
+}

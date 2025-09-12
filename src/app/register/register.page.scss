@@ -4,7 +4,7 @@
   align-items: center;
   min-height: 100vh;
   padding: 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ea66af 0%, #764ba2 100%);
 }
 
 ion-card {
@@ -46,10 +46,10 @@ ion-input, ion-select {
 }
 
 .register-button {
-  --background: #667eea;
-  --background-activated: #5a67d8;
-  --background-focused: #5a67d8;
-  --background-hover: #5a67d8;
+  --background:  linear-gradient(135deg, #ea66af 0%, #764ba2 100%);
+  --background-activated:  linear-gradient(135deg, #ea66af 0%, #764ba2 100%);
+  --background-focused:  linear-gradient(135deg, #ea66af 0%, #764ba2 100%);
+  --background-hover:  linear-gradient(135deg, #ea66af 0%, #764ba2 100%);
   margin-top: 20px;
   height: 48px;
   font-weight: 600;

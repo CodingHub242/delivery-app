@@ -138,19 +138,22 @@ export class HomePage implements OnInit, AfterViewInit {
   slides = [
     {
       title: 'CLEANING MADE SIMPLE',
-      subtitle: 'Choose from a variety of services',
+      subtitle: 'variety of services',
+      description: 'Choose from a wide range of cleaning services to suit your needs',
       bgColor: '#231F20', // dark blackish
       bgImage: '../assets/img/s1.jpg' // corrected path
     },
     {
       title: 'RELIABLE DELIVERY',
-      subtitle: 'Get your packages delivered on time',
+      subtitle: 'On-time and secure',
+      description: 'We guarantee delivery on time',
       bgColor: '#426C95', // blue
       bgImage: '../assets/img/s2.jpg'
     },
     {
       title: 'AFFORDABLE PRICES',
-      subtitle: 'Best rates for all your delivery needs',
+      subtitle: 'Best value for your money',
+      description: 'Competitive pricing without compromising on quality',
       bgColor: '#F15F4E', // red-orange
       bgImage: '../assets/img/s3.jpg'
     },
@@ -162,7 +165,8 @@ export class HomePage implements OnInit, AfterViewInit {
     // },
     {
       title: 'CUSTOMER SATISFACTION',
-      subtitle: 'We prioritize your happiness',
+      subtitle: 'We value our customers',
+      description: 'Our top priority is ensuring our customers are satisfied with our services',
       bgColor: '#FAF7D8', // light cream
       bgImage: '../assets/img/s5.jpg'
     }

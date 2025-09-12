@@ -1,62 +1,89 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-   
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <div class="login-container">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Welcome Back</ion-card-title>
-      </ion-card-header>
-      
-      <ion-card-content>
-        <form (ngSubmit)="login()">
-          <ion-item>
-            <ion-label position="stacked">Email</ion-label>
-            <ion-input 
-              type="email" 
-              [(ngModel)]="loginRequest.email" 
-              name="email" 
-              required
-              placeholder="Enter your email">
-            </ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label position="stacked">Password</ion-label>
-            <ion-input 
-              type="password" 
-              [(ngModel)]="loginRequest.password" 
-              name="password" 
-              required
-              placeholder="Enter your password">
-            </ion-input>
-          </ion-item>
-
-          <div *ngIf="errorMessage" class="error-message">
-            {{ errorMessage }}
-          </div>
-
-          <ion-button 
-            type="submit" 
-            expand="block" 
-            [disabled]="isLoading"
-            class="login-button">
-            {{ isLoading ? 'Logging in...' : 'Login' }}
-          </ion-button>
-        </form>
-
-        <div class="register-link">
-          <p>Don't have an account? 
-            <a (click)="navigateToRegister()" class="link">Register here</a>
-          </p>
-          <p>Don't have an account? 
-            <a (click)="navigateToWork()" class="link">Work</a>
-          </p>
+    <div class="login-wrapper">
+      <!-- Logo/Brand Section -->
+      <div class="brand-section">
+        <div class="logo-container">
+          <ion-icon name="business" class="brand-icon"></ion-icon>
         </div>
-      </ion-card-content>
-    </ion-card>
+        <h1 class="brand-title">Welcome Back</h1>
+        <p class="brand-subtitle">Sign in to your account</p>
+      </div>
+
+      <!-- Login Form Card -->
+      <ion-card class="login-card">
+        <ion-card-content class="login-content">
+          <form (ngSubmit)="login()" class="login-form">
+            <!-- Email Field -->
+            <div class="input-group">
+              <ion-icon name="mail" class="input-icon"></ion-icon>
+              <ion-item lines="none" class="modern-input">
+                <ion-label position="floating">Email Address</ion-label>
+                <ion-input
+                  type="email"
+                  [(ngModel)]="loginRequest.email"
+                  name="email"
+                  required
+                  placeholder="Enter your email"
+                  class="modern-input-field">
+                </ion-input>
+              </ion-item>
+            </div>
+
+            <!-- Password Field -->
+            <div class="input-group">
+              <ion-icon name="lock-closed" class="input-icon"></ion-icon>
+              <ion-item lines="none" class="modern-input">
+                <ion-label position="floating">Password</ion-label>
+                <ion-input
+                  type="password"
+                  [(ngModel)]="loginRequest.password"
+                  name="password"
+                  required
+                  placeholder="Enter your password"
+                  class="modern-input-field">
+                </ion-input>
+              </ion-item>
+            </div>
+
+            <!-- Error Message -->
+            <div *ngIf="errorMessage" class="error-message">
+              <ion-icon name="alert-circle" class="error-icon"></ion-icon>
+              <span>{{ errorMessage }}</span>
+            </div>
+
+            <!-- Login Button -->
+            <ion-button
+              type="submit"
+              expand="block"
+              [disabled]="isLoading"
+              class="login-button">
+              <ion-icon *ngIf="!isLoading" name="log-in" slot="start"></ion-icon>
+              <ion-spinner *ngIf="isLoading" name="crescent" slot="start"></ion-spinner>
+              {{ isLoading ? 'Signing In...' : 'Sign In' }}
+            </ion-button>
+          </form>
+
+          <!-- Register Link -->
+          <div class="register-section">
+            <p class="register-text">
+              New to our platform?
+              <a (click)="navigateToRegister()" class="register-link">Create Account</a>
+            </p>
+
+            <p class="register-text">
+              
+              <a (click)="navigateToWork()" class="register-link">Worker Login</a>
+            </p>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
   </div>
 </ion-content>

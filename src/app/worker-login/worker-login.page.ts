@@ -18,7 +18,7 @@ export class WorkerLoginPage {
 
   constructor(
     private authService: AuthService,
-    private router: Router,
+    public router: Router,
     private fb: FormBuilder
   ) {
     this.loginForm = this.fb.group({

@@ -58,10 +58,11 @@ export class ServiceDetailsPage implements OnInit {
   service: Service | null = null;
   loading: boolean = true;
   error: string = '';
+  otherServices: Service[] = [];
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
+    public router: Router,
     private apiService: ApiService,
     private authService: AuthService,
     private alertController: AlertController
@@ -72,7 +73,9 @@ export class ServiceDetailsPage implements OnInit {
   ngOnInit() {
     const serviceId = this.route.snapshot.paramMap.get('id');
     if (serviceId) {
-      this.loadService(parseInt(serviceId));
+      const idNum = parseInt(serviceId);
+      this.loadService(idNum);
+      this.loadOtherServices(idNum);
     }
   }
 
@@ -87,6 +90,17 @@ export class ServiceDetailsPage implements OnInit {
         this.error = 'Failed to load service details. Please try again later.';
         this.loading = false;
         console.error('Error loading service:', error);
+      }
+    });
+  }
+
+  loadOtherServices(currentServiceId: number) {
+    this.apiService.getServices().subscribe({
+      next: (services) => {
+        this.otherServices = services.filter(s => s.id !== currentServiceId);
+      },
+      error: (error) => {
+        console.error('Error loading other services:', error);
       }
     });
   }
