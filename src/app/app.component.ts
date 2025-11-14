@@ -88,8 +88,9 @@ export class AppComponent {
   }
 
   ionViewWillEnter() {
-    StatusBar.setOverlaysWebView({ overlay: false });
+    StatusBar.setOverlaysWebView({ overlay: true });
     StatusBar.setBackgroundColor({ color: '#9f3a2e' });
+    StatusBar.hide();
   }
 
   refreshChildComponent() {

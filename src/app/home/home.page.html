@@ -15,11 +15,11 @@
    
     <swiper-container [pagination]="true" [loop]="true" autoplay="true" [autoplay]="{delay:10000}" [simulateTouch]="false" [slidesPerView]="1" class="section swiper-container swiper-slider swiper-slider-minimal"  effect="fade"  #swiperContainer>
       
-          <swiper-slide *ngFor="let slide of slides" class="swiper-slide swiper-slide_video" style="background-image:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('{{slide.bgImage}}');background-repeat: no-repeat;background-size: cover;background-position: top;height: auto;">
+          <swiper-slide *ngFor="let slide of slides" class="swiper-slide swiper-slide_video" style="background-image:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('{{slide.bgImage}}');background-repeat: no-repeat;background-size: cover;background-position: bottom;height: auto;">
             <div class="container">
               <div class="jumbotron-classic-content">
                 <div class="wow-outer">
-                  <div class="title-docor-text font-weight-bold title-decorated text-uppercase wow slideInLeft text-white">{{ slide.title }}</div>
+                  <div class="title-docor-text font-weight-bold title-decorated text-uppercase wow slideInLeft text-white mt-5">{{ slide.title }}</div>
                 </div>
                 <h1 class="text-uppercase text-white text-center font-weight-bold wow-outer"><span class="wow slideInDown" data-wow-delay=".2s">{{slide.subtitle}}</span></h1>
                 <p class="text-white wow-outer"><span style="text-align: center;" class="wow slideInDown" data-wow-delay=".35s">{{slide.description}}</span></p>

@@ -2,10 +2,10 @@
 
 ion-header {
 //  margin-top: 20px;
-  padding-top: env(safe-area-inset-top,50px);
-  padding-top: constant(safe-area-inset-top,50px);
-  --padding-top: env(safe-area-inset-top,50px);
-  --padding-top: constant(safe-area-inset-top,50px);
+  padding-top: env(safe-area-inset-top);
+  padding-top: constant(safe-area-inset-top);
+  --padding-top: env(safe-area-inset-top);
+  --padding-top: constant(safe-area-inset-top);
   background: #f4f4f4;
   --background:#f4f4f4;
   font-family: "Montserrat", sans-serif;
@@ -17,16 +17,16 @@ ion-router-outlet{
   // overflow-y: scroll;
 }
 ion-content{
-  padding-top: env(safe-area-inset-top,50px);
-  padding-top: constant(safe-area-inset-top,50px);
-  --padding-top: env(safe-area-inset-top,50px);
-  --padding-top: constant(safe-area-inset-top,50px);
+  padding-top: env(safe-area-inset-top);
+  padding-top: constant(safe-area-inset-top);
+  --padding-top: env(safe-area-inset-top);
+  --padding-top: constant(safe-area-inset-top);
 }
 ion-toolbar{
   padding-top: env(safe-area-inset-top);
   padding-top: constant(safe-area-inset-top);
-  --padding-top: env(safe-area-inset-top,50px);
-  --padding-top: constant(safe-area-inset-top,50px);
+  --padding-top: env(safe-area-inset-top);
+  --padding-top: constant(safe-area-inset-top);
   background: #f4f4f4;
   --background:#f4f4f4;
   font-family: "Montserrat", sans-serif;
